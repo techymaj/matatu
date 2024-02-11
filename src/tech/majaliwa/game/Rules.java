@@ -44,7 +44,7 @@ public class Rules {
         return Objects.requireNonNull(currentFace) == Face.ACE;
     }
 
-    public boolean canPlayerPlayCard(Card card) {
+    public static boolean canPlayerPlayCard(Card card) {
         return isValidCard(card);
     }
 
@@ -65,7 +65,7 @@ public class Rules {
         return false;
     }
 
-    public static boolean isValidCard(Card card) {
+    private static boolean isValidCard(Card card) {
         if (card == null) {
             return true; // pass turn
         }

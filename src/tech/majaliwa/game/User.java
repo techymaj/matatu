@@ -7,7 +7,7 @@ import java.util.Objects;
 import java.util.Scanner;
 
 import static tech.majaliwa.game.Game.*;
-import static tech.majaliwa.game.Rules.isValidCard;
+import static tech.majaliwa.game.Rules.canPlayerPlayCard;
 
 public class User {
     private static boolean AI_TAKES_DAMAGE;
@@ -52,7 +52,7 @@ public class User {
         while (iterator.hasNext()) {
             var card = iterator.next();
             if (card.equals(cardToPlay)) {
-                if (isValidCard(card)) {
+                if (canPlayerPlayCard(card)) {
                     iterator.remove();
                     addToPile(card);
                     return card;
