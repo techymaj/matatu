@@ -6,8 +6,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 import static tech.majaliwa.game.Game.*;
-import static tech.majaliwa.game.Game.reshuffleDeckAndContinuePlaying;
-import static tech.majaliwa.game.Rules.*;
+import static tech.majaliwa.game.Rules.isValidCard;
 
 public class User {
     private static boolean AI_TAKES_DAMAGE;
@@ -52,30 +51,46 @@ public class User {
         while (iterator.hasNext()) {
             var card = iterator.next();
             if (card.equals(cardToPlay)) {
-                System.out.println(this.name + " played: " + card);
-                switch (card.face()) {
-                    case ACE -> {
-                        addToPile(card);
-                        askForSuit(scanner);
-                    }
-                    case EIGHT, JACK -> {
-                        addToPile(card);
-//                        followCard(new Scanner(System.in));
-                    }
-                    case TWO, THREE, JOKER -> {
-                        addToPile(card);
-                        setAiTakesDamage(true);
-                    }
-                    default -> addToPile(card);
+                if (isValidCard(card)) {
+//                    addToPile(card);
+                    iterator.remove();
+                    return card;
+                } else {
+                    System.out.println("Invalid card");
+                    return null;
                 }
-                iterator.remove();
-                return card;
             }
         }
         return null;
     }
 
-    public void pickCard(User user) {
+//    private void followCard(Scanner scanner) {
+////        System.out.println("You can follow this card");
+//        var input = scanner.nextLine();
+//        if (input.equalsIgnoreCase("p")) {
+//            if (canPlayerPickACard()) {
+//                pickCard(this);
+//                playerPickCount++;
+//            } else {
+//                System.out.println("You can't pick a card yet");
+//            }
+//            PLAYER_TURN = true;
+//        } else if (input.equalsIgnoreCase("pass")) {
+//            if (canPlayerPassTurn()) {
+//                System.out.println("You have passed your turn");
+//                playerPickCount = 0;
+//                PLAYER_TURN = false;
+//            } else {
+//                System.out.println("You can't pass your turn yet");
+//                PLAYER_TURN = true;
+//            }
+//        } else {
+//            playCard(Integer.parseInt(input));
+//            PLAYER_TURN = false;
+//        }
+//    }
+
+    public static void pickCard(User user) {
         if (deck.isEmpty()) {
             reshuffleDeckAndContinuePlaying();
         }
@@ -91,7 +106,7 @@ public class User {
         }
     }
 
-    private void takeDamage(User user, Face currentFace) {
+    static void takeDamage(User user, Face currentFace) {
         switch (currentFace) {
             case TWO -> {
                 var deckIsEmpty = user.pickTwoCards(deck);

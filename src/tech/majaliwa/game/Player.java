@@ -38,11 +38,6 @@ public class Player extends User {
 //            }
 //        }
 
-        if (canFollowCard()) {
-            System.out.println("You can follow this card");
-            checkInput();
-        }
-
         checkInput();
     }
 
@@ -67,14 +62,25 @@ public class Player extends User {
                     PLAYER_TURN = true;
                 }
             } else {
-                playCard(Integer.parseInt(input));
+                var cardToPlay = playCard(Integer.parseInt(input));
+                addToPile(cardToPlay);
+                if (canFollowCard()) {
+                    System.out.println("You can follow this card");
+                    System.out.println("Top card: " + getTopCard());
+                    System.out.println("Your hand: ");
+                    this.getHand().forEach(
+                            card -> System.out.print(card + "(" + (this.getHand().indexOf(card) + 1) + ")" + " ")
+                    );
+                    System.out.println();
+                    checkInput();
+                }
+                playerPickCount = 0;
                 PLAYER_TURN = false;
             }
         } catch (NumberFormatException nfe) {
             System.out.println("Invalid input");
         }
     }
-
 
     private Suit askingCountered(Player player, Card cardPlayed) {
         if (cardPlayed.face() == Face.ACE) {

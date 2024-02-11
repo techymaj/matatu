@@ -138,11 +138,11 @@ public class Game {
             if (PLAYER_TURN) {
                 if (player instanceof Player turn) {
                     turn.playerTurn();
-//                    PLAYER_TURN = false;
+                    PLAYER_TURN = false;
                 }
             } else {
                 if (ai instanceof AI turn) {
-                    turn.aiTurn();
+                    turn.aiTurn(turn);
                     PLAYER_TURN = true;
                 }
             }
