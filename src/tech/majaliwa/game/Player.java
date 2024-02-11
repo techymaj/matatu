@@ -48,7 +48,11 @@ public class Player extends User {
                     pickCard(this);
                     playerPickCount++;
                 } else {
-                    System.out.println("You can't pick a card yet");
+                    if (Rules.isDamageCardOnPile())
+                        System.out.println("Play a card to counter or type 'accept' to accept damage.");
+                    else {
+                        System.out.println("You can't pick a card yet. Play a card or pass your turn.");
+                    }
                 }
                 playerActions();
                 checkInput();
@@ -68,9 +72,11 @@ public class Player extends User {
                     if (cardPlayed != null) {
                         if (canFollowCard()) {
                             System.out.println("You can follow this card");
+                            playerPickCount = 0;
                             playerActions();
                             checkInput();
                         }
+                        checkIfPlayerWon(this);
                         playerPickCount = 0;
                         PLAYER_TURN = false;
                     }
@@ -106,6 +112,8 @@ public class Player extends User {
         if (!pile.isEmpty()) {
             var topCard = Objects.requireNonNull(getTopCard());
             System.out.println("Top card: " + topCard);
+            System.out.println("Damage card? " + (damageCardOnPile() ? "Yes" : "No"));
+            System.out.println("Pick count: " + playerPickCount);
         }
     }
 }

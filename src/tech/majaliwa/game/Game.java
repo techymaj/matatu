@@ -17,9 +17,15 @@ public class Game {
     public static boolean JOKER_MODE;
     public static boolean GAME_OVER;
     public static Suit askedSuit;
+    public static boolean DAMAGE_CARD_ON_PILE;
 
     public Rules rules;
     public static List<User> users = new ArrayList<>();
+
+    static {
+        playerPickCount = 0;
+        DAMAGE_CARD_ON_PILE = false;
+    }
 
     public Game() {
         this.rules = new Rules();
@@ -71,6 +77,8 @@ public class Game {
             System.out.println("Restarting game...");
             pile.clear();
             deck.clear();
+            player.getHand().clear();
+            ai.getHand().clear();
             GAME_OVER = false;
             setGameMode();
             gameUsers(player, ai);
@@ -178,5 +186,13 @@ public class Game {
 
     public static void setAskedSuit(Suit askedSuit) {
         Game.askedSuit = askedSuit;
+    }
+
+    public static boolean damageCardOnPile() {
+        return DAMAGE_CARD_ON_PILE;
+    }
+
+    public static void setDamageCardOnPile(boolean damageCardOnPile) {
+        DAMAGE_CARD_ON_PILE = damageCardOnPile;
     }
 }

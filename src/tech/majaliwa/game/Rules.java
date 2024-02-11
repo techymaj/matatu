@@ -16,7 +16,7 @@ public class Rules {
         if (playerPickCount == 1 && PLAYER_TURN) return false;
 
         // if attacked by a damage card
-        return !isDamageCardOnPile() || !PLAYER_TURN;
+        return !damageCardOnPile() && PLAYER_TURN;
     }
 
     public static boolean isDamageCardOnPile() {
@@ -27,6 +27,7 @@ public class Rules {
 
         switch (currentFace) {
             case TWO, THREE, JOKER -> {
+                setDamageCardOnPile(true);
                 return true;
             }
         }
@@ -92,6 +93,12 @@ public class Rules {
             var previousFaceIsAce = previousFace.equals(Face.ACE);
             var previousSuitIsSpades = previousSuit.equals(Suit.SPADES);
             var previousCardIsAceOfSpades = previousFaceIsAce && previousSuitIsSpades;
+
+            var currentFaceIsAce = currentFace.equals(Face.ACE);
+
+            if (currentFaceIsAce) {
+                return true; // play ace of hearts, diamonds, spades or clubs
+            }
 
             if (previousCardIsAceOfSpades && (canPlayOnTopOfJoker_F || canPlayOnTopOfJoker_M)) {
                 return true; // play hearts, diamonds, spades or clubs on top of ace of spades
