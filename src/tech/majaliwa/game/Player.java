@@ -59,21 +59,31 @@ public class Player extends User {
                     PLAYER_TURN = false;
                 } else {
                     System.out.println("You can't pass your turn yet");
-                    PLAYER_TURN = true;
-                }
-            } else {
-                var cardToPlay = playCard(Integer.parseInt(input));
-                addToPile(cardToPlay);
-                if (canFollowCard()) {
-                    System.out.println("You can follow this card");
                     playerActions();
                     checkInput();
                 }
-                playerPickCount = 0;
-                PLAYER_TURN = false;
+            } else {
+                try {
+                    var cardPlayed = playCard(Integer.parseInt(input));
+                    if (cardPlayed != null) {
+                        if (canFollowCard()) {
+                            System.out.println("You can follow this card");
+                            playerActions();
+                            checkInput();
+                        }
+                        playerPickCount = 0;
+                        PLAYER_TURN = false;
+                    }
+                } catch (IndexOutOfBoundsException e) {
+                    System.out.println("Wrong card position.");
+                    playerActions();
+                    checkInput();
+                }
             }
         } catch (NumberFormatException nfe) {
             System.out.println("Invalid input");
+            playerActions();
+            checkInput();
         }
     }
 

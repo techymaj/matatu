@@ -3,6 +3,7 @@ package tech.majaliwa.game;
 import tech.majaliwa.Face;
 
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Scanner;
 
 import static tech.majaliwa.game.Game.*;
@@ -46,49 +47,30 @@ public class User {
 
     public Card playCard(int position) {
         var iterator = this.hand.listIterator();
-        var cardToPlay = this.hand.get(position - 1);
 
+        var cardToPlay = this.hand.get(position - 1);
         while (iterator.hasNext()) {
             var card = iterator.next();
             if (card.equals(cardToPlay)) {
                 if (isValidCard(card)) {
-//                    addToPile(card);
                     iterator.remove();
+                    addToPile(card);
                     return card;
-                } else {
-                    System.out.println("Invalid card");
-                    return null;
                 }
+                System.out.println("Invalid card. Try again");
+                var topCard = Objects.requireNonNull(getTopCard());
+                System.out.println("Top card: " + topCard);
+                System.out.println("Your hand: ");
+                this.getHand().forEach(
+                        c -> System.out.print(c + "(" + (this.getHand().indexOf(c) + 1) + ")" + " ")
+                );
+                System.out.println();
+                return playCard(scanner.nextInt());
             }
         }
+
         return null;
     }
-
-//    private void followCard(Scanner scanner) {
-////        System.out.println("You can follow this card");
-//        var input = scanner.nextLine();
-//        if (input.equalsIgnoreCase("p")) {
-//            if (canPlayerPickACard()) {
-//                pickCard(this);
-//                playerPickCount++;
-//            } else {
-//                System.out.println("You can't pick a card yet");
-//            }
-//            PLAYER_TURN = true;
-//        } else if (input.equalsIgnoreCase("pass")) {
-//            if (canPlayerPassTurn()) {
-//                System.out.println("You have passed your turn");
-//                playerPickCount = 0;
-//                PLAYER_TURN = false;
-//            } else {
-//                System.out.println("You can't pass your turn yet");
-//                PLAYER_TURN = true;
-//            }
-//        } else {
-//            playCard(Integer.parseInt(input));
-//            PLAYER_TURN = false;
-//        }
-//    }
 
     public static void pickCard(User user) {
         if (deck.isEmpty()) {
