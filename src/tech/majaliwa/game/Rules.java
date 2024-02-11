@@ -13,7 +13,7 @@ public class Rules {
         if (pile.isEmpty()) return false;
 
         // can't pick twice without playing or passing
-        if (playerPickCount > 1 && PLAYER_TURN) return false;
+        if (playerPickCount == 1 && PLAYER_TURN) return false;
 
         // if attacked by a damage card
         return !isDamageCardOnPile() || !PLAYER_TURN;

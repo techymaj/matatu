@@ -3,7 +3,6 @@ package tech.majaliwa.game;
 import tech.majaliwa.Face;
 
 import java.util.Objects;
-import java.util.Scanner;
 
 import static tech.majaliwa.game.Game.*;
 import static tech.majaliwa.game.Rules.*;
@@ -51,7 +50,8 @@ public class Player extends User {
                 } else {
                     System.out.println("You can't pick a card yet");
                 }
-                PLAYER_TURN = true;
+                playerActions();
+                checkInput();
             } else if (input.equalsIgnoreCase("pass")) {
                 if (canPlayerPassTurn()) {
                     System.out.println("You have passed your turn");
@@ -66,12 +66,7 @@ public class Player extends User {
                 addToPile(cardToPlay);
                 if (canFollowCard()) {
                     System.out.println("You can follow this card");
-                    System.out.println("Top card: " + getTopCard());
-                    System.out.println("Your hand: ");
-                    this.getHand().forEach(
-                            card -> System.out.print(card + "(" + (this.getHand().indexOf(card) + 1) + ")" + " ")
-                    );
-                    System.out.println();
+                    playerActions();
                     checkInput();
                 }
                 playerPickCount = 0;
