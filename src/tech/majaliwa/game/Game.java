@@ -19,18 +19,12 @@ public class Game {
     public static Suit askedSuit;
     public static boolean DAMAGE_CARD_ON_PILE;
     public static boolean AI_CAN_PICK_CARD_FROM_DECK;
-
-    public Rules rules;
     public static List<User> users = new ArrayList<>();
 
     static {
         playerPickCount = 0;
         DAMAGE_CARD_ON_PILE = false;
         AI_CAN_PICK_CARD_FROM_DECK = true;
-    }
-
-    public Game() {
-        this.rules = new Rules();
     }
 
     public static void main(String[] args) {
@@ -152,7 +146,7 @@ public class Game {
                 }
             } else {
                 if (ai instanceof AI turn) {
-                    turn.aiTurn(turn);
+                    turn.aiTurn();
                     PLAYER_TURN = true;
                 }
             }

@@ -115,7 +115,9 @@ public class Player extends User {
             System.out.println("Top card: " + topCard);
             System.out.println("Damage card? " + (damageCardOnPile() ? "Yes" : "No"));
 
-            System.out.println("Asked suit: " + getAskedSuit());
+            if (getAskedSuit() != null) {
+                System.out.println("Asked suit: " + getAskedSuit() + " - " + getAskedSuit().getUnicode());
+            }
             System.out.println("Pick count: " + playerPickCount);
         }
         System.out.println("Your hand: ");

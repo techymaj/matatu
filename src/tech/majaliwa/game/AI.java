@@ -1,8 +1,7 @@
 package tech.majaliwa.game;
 
 import static tech.majaliwa.game.Game.*;
-import static tech.majaliwa.game.Rules.canFollowCard;
-import static tech.majaliwa.game.Rules.canPlayerPlayCard;
+import static tech.majaliwa.game.Rules.*;
 
 public class AI extends User {
 
@@ -10,24 +9,24 @@ public class AI extends User {
         super(name);
     }
 
-    void aiTurn(AI ai) {
+    void aiTurn() {
         System.out.println("AI's turn");
         System.out.println(getHand());
         playerPickCount = 0;
         setDamageCardOnPile(false);
 
-        var cardPlayed = playCard(this);
+        var cardPlayed = aiPlaysCard();
 
         if (cardPlayed == null) {
            return;
         }
 
         if (canFollowCard()) {
-            aiTurn(this);
+            aiTurn();
         }
     }
 
-    public Card playCard(AI ai) {
+    public Card aiPlaysCard() {
         var iterator = getHand().listIterator();
         while (iterator.hasNext()) {
             var card = iterator.next();
@@ -36,6 +35,7 @@ public class AI extends User {
                 addToPile(card);
                 System.out.println("AI played: " + card);
                 AI_CAN_PICK_CARD_FROM_DECK = true;
+                setAskedSuit(null);  // restrict follow with wrong card e.g. (8♦, 8♠, 9♦) with askedSuit ♦ is wrong
                 return card;
             }
         }
@@ -43,7 +43,7 @@ public class AI extends User {
         // No card was found in hand
         if (AI_CAN_PICK_CARD_FROM_DECK) {
             aiPicksFromDeck();
-            return playCard(this);
+            return aiPlaysCard();
         } else {
             System.out.println("AI passed turn");
         }
