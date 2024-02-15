@@ -214,7 +214,7 @@ public class User {
 
         if (user.getHand().isEmpty()) {
             if (user instanceof Player) {
-                System.out.println("Congratulations " + user.getName() + " you won!");
+                System.out.println("Congratulations, " + user.getName() + " you won!");
             } else {
                 System.out.println(user.getName() + " won!");
             }
