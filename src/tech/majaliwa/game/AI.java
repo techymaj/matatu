@@ -44,6 +44,8 @@ public class AI extends User {
         if (AI_CAN_PICK_CARD_FROM_DECK) {
             aiPicksFromDeck();
             return playCard(this);
+        } else {
+            System.out.println("AI passed turn");
         }
 
         return null; // pass turn
