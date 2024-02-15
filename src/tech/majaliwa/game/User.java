@@ -55,6 +55,7 @@ public class User {
                 if (canPlayerPlayCard(card)) {
                     iterator.remove();
                     addToPile(card);
+                    setAskedSuit(null);  // restrict follow with wrong card e.g. (8♦, 8♠, 9♦) with askedSuit ♦ is wrong
                     return card;
                 }
                 System.out.println("Invalid card. Try again");
