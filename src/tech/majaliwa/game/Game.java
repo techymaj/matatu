@@ -18,6 +18,7 @@ public class Game {
     public static boolean GAME_OVER;
     public static Suit askedSuit;
     public static boolean DAMAGE_CARD_ON_PILE;
+    public static boolean AI_CAN_PICK_CARD_FROM_DECK;
 
     public Rules rules;
     public static List<User> users = new ArrayList<>();
@@ -25,6 +26,7 @@ public class Game {
     static {
         playerPickCount = 0;
         DAMAGE_CARD_ON_PILE = false;
+        AI_CAN_PICK_CARD_FROM_DECK = true;
     }
 
     public Game() {

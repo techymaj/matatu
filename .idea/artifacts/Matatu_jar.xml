@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="Matatu:jar">
+    <output-path>$USER_HOME$/Desktop/production_java</output-path>
+    <root id="archive" name="Matatu.jar">
+      <element id="module-output" name="Matatu" />
+    </root>
+  </artifact>
+</component>

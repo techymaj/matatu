@@ -226,7 +226,7 @@ public class User {
         pile.add(card);
     }
 
-    public void askForSuit(Scanner scanner) {
+    public static void askForSuit(Scanner scanner) {
         System.out.println("Choose a suit: (H)earts, (S)pades, (C)lubs, (D)iamonds");
         var suit = scanner.nextLine().toUpperCase();
 

@@ -15,6 +15,8 @@ public class Player extends User {
     public void playerTurn() {
         playerActions();
 
+        // Incoming so react
+
 //        if (isDamageCardOnPile()) {
 //            String choice = scanner.nextLine();
 //            System.out.println("You have been hit with a damage card");
@@ -71,10 +73,14 @@ public class Player extends User {
                     var cardPlayed = playCard(Integer.parseInt(input));
                     if (cardPlayed != null) {
                         if (canFollowCard()) {
-                            System.out.println("You can follow this card");
+                            System.out.println("You can follow this card: " + cardPlayed);
                             playerPickCount = 0;
                             playerActions();
                             checkInput();
+                        }
+                        if (isAskingCardOnPile()) {
+                            checkIfPlayerWon(this);
+                            askForSuit(scanner);
                         }
                         checkIfPlayerWon(this);
                         playerPickCount = 0;
@@ -93,7 +99,7 @@ public class Player extends User {
         }
     }
 
-    private Suit askingCountered(Player player, Card cardPlayed) {
+    private Suit askingCountered(Card cardPlayed) {
         if (cardPlayed.face() == Face.ACE) {
             addToPile(cardPlayed);
             askForSuit(scanner);
@@ -104,16 +110,18 @@ public class Player extends User {
 
     private void playerActions() {
         System.out.println("It's your turn " + this.getName());
+        if (!pile.isEmpty()) {
+            var topCard = Objects.requireNonNull(getTopCard());
+            System.out.println("Top card: " + topCard);
+            System.out.println("Damage card? " + (damageCardOnPile() ? "Yes" : "No"));
+
+            System.out.println("Asked suit: " + getAskedSuit());
+            System.out.println("Pick count: " + playerPickCount);
+        }
         System.out.println("Your hand: ");
         this.getHand().forEach(
                 card -> System.out.print(card + "(" + (this.getHand().indexOf(card) + 1) + ")" + " ")
         );
         System.out.println();
-        if (!pile.isEmpty()) {
-            var topCard = Objects.requireNonNull(getTopCard());
-            System.out.println("Top card: " + topCard);
-            System.out.println("Damage card? " + (damageCardOnPile() ? "Yes" : "No"));
-            System.out.println("Pick count: " + playerPickCount);
-        }
     }
 }
