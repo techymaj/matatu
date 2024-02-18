@@ -32,7 +32,7 @@ public class AI extends User {
             var card = iterator.next();
             if (canPlayerPlayCard(card)) {
                 iterator.remove();
-                addToPile(card);
+                addCardToPile(card);
                 System.out.println("AI played: " + card);
                 AI_CAN_PICK_CARD_FROM_DECK = true;
                 setAskedSuit(null);  // restrict follow with wrong card e.g. (8♦, 8♠, 9♦) with askedSuit ♦ is wrong

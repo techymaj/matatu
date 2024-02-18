@@ -54,7 +54,7 @@ public class User {
             if (card.equals(cardToPlay)) {
                 if (canPlayerPlayCard(card)) {
                     iterator.remove();
-                    addToPile(card);
+                    addCardToPile(card);
                     setAskedSuit(null);  // restrict follow with wrong card e.g. (8♦, 8♠, 9♦) with askedSuit ♦ is wrong
                     return card;
                 }
@@ -202,7 +202,7 @@ public class User {
                 (cardPlayed.face().equals(Face.ACE) && cardPlayed.suit().equals(Suit.SPADES))
         ) {
             setAiTakesDamage(true);
-            addToPile(cardPlayed);
+            addCardToPile(cardPlayed);
             checkIfPlayerWon(user);
             return true;
         }
@@ -223,7 +223,7 @@ public class User {
         }
     }
 
-    public static void addToPile(Card card) {
+    public static void addCardToPile(Card card) {
         pile.add(card);
     }
 

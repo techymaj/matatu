@@ -42,7 +42,7 @@ public class Player extends User {
         checkInput();
     }
 
-    private void checkInput() {
+    public void checkInput() {
         try {
             var input = scanner.nextLine();
             if (input.equalsIgnoreCase("p")) {
@@ -101,14 +101,14 @@ public class Player extends User {
 
     private Suit askingCountered(Card cardPlayed) {
         if (cardPlayed.face() == Face.ACE) {
-            addToPile(cardPlayed);
+            addCardToPile(cardPlayed);
             askForSuit(scanner);
             return askedSuit;
         }
         return null;
     }
 
-    private void playerActions() {
+    public void playerActions() {
         System.out.println("It's your turn " + this.getName());
         if (!pile.isEmpty()) {
             var topCard = Objects.requireNonNull(getTopCard());
