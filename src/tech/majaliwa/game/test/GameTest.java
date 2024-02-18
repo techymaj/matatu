@@ -15,6 +15,7 @@ import java.util.Random;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static tech.majaliwa.game.Deck.createDeck;
+import static tech.majaliwa.game.Rules.canFollowCard;
 import static tech.majaliwa.game.Rules.canPlayerPlayCard;
 import static tech.majaliwa.game.User.addCardToPile;
 
@@ -71,5 +72,29 @@ class GameTest {
         var playAnyCard = hand.get(cardPosition);
         if (canPlayerPlayCard(playAnyCard)) addCardToPile(playAnyCard);
         assertTrue(pile.contains(playAnyCard));
+    }
+
+    @Test
+    @DisplayName("If card on top of pile is Jack, follow it with a valid card")
+    public void ifCardOnTopOfPileIsJackOrEight_FollowItWithACard() {
+        var jackOfHearts = new Card(Face.JACK, Suit.HEARTS, 20);
+        addCardToPile(jackOfHearts);
+        var followWithCard = new Card(Face.THREE, Suit.HEARTS, 3);
+        if (canPlayerPlayCard(followWithCard)) {
+            if (canFollowCard()) addCardToPile(followWithCard);
+        }
+        assertTrue(pile.contains(followWithCard));
+    }
+
+    @Test
+    @DisplayName("If card on top of pile is Eight, follow it with a valid card")
+    public void ifCardOnTopOfPileIsEight_FollowItWithACard() {
+        var eightOfHearts = new Card(Face.EIGHT, Suit.HEARTS, 20);
+        addCardToPile(eightOfHearts);
+        var followWithCard = new Card(Face.THREE, Suit.HEARTS, 3);
+        if (canPlayerPlayCard(followWithCard)) {
+            if (canFollowCard()) addCardToPile(followWithCard);
+        }
+        assertTrue(pile.contains(followWithCard));
     }
 }
