@@ -26,9 +26,16 @@ public class Rules {
         var currentFace = cardOnTop.face();
 
         switch (currentFace) {
-            case TWO, THREE, JOKER -> {
+            case TWO -> {
                 setDamageCardOnPile(true);
                 return true;
+            }
+            case THREE, JOKER -> {
+                if (JOKER_MODE) {
+                    setDamageCardOnPile(true);
+                    return true;
+                }
+                return false;
             }
         }
 

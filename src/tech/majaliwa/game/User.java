@@ -197,13 +197,13 @@ public class User {
 
     public boolean damageCountered(User user, Card cardPlayed) {
         if (cardPlayed.face().equals(Face.TWO) ||
-                cardPlayed.face().equals(Face.THREE) ||
-                cardPlayed.face().equals(Face.JOKER) ||
+                (cardPlayed.face().equals(Face.THREE) && JOKER_MODE) ||
+                (cardPlayed.face().equals(Face.JOKER) && JOKER_MODE) ||
                 (cardPlayed.face().equals(Face.ACE) && cardPlayed.suit().equals(Suit.SPADES))
         ) {
-            setAiTakesDamage(true);
-            addCardToPile(cardPlayed);
-            checkIfPlayerWon(user);
+//            setAiTakesDamage(true);
+//            addCardToPile(cardPlayed);
+//            checkIfPlayerWon(user);
             return true;
         }
 

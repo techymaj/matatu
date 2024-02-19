@@ -4,19 +4,16 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import tech.majaliwa.Face;
-import tech.majaliwa.game.Card;
-import tech.majaliwa.game.Game;
-import tech.majaliwa.game.Suit;
+import tech.majaliwa.game.*;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static tech.majaliwa.game.Deck.createDeck;
-import static tech.majaliwa.game.Rules.canFollowCard;
-import static tech.majaliwa.game.Rules.canPlayerPlayCard;
+import static tech.majaliwa.game.Game.JOKER_MODE;
+import static tech.majaliwa.game.Rules.*;
 import static tech.majaliwa.game.User.addCardToPile;
 
 class GameTest {
@@ -24,10 +21,11 @@ class GameTest {
     private ArrayList<Card> pile;
     private int cardPosition;
     private ArrayList<Card> hand;
+    private ArrayList<Card> deck;
 
     @BeforeEach
     public void setUp() {
-        ArrayList<Card> deck = createDeck(true);
+        deck = createDeck(true);
         pile = Game.pile;
         List<Card> serve = deck.subList(0, 7);
         hand = new ArrayList<>(serve);
@@ -39,15 +37,15 @@ class GameTest {
     @Test
     @DisplayName("If pile is empty, play any card")
     public void ifPileIsEmpty_PlayAnyCard() {
-        var playRandomCard = hand.get(cardPosition);
-        if (canPlayerPlayCard(playRandomCard)) addCardToPile(playRandomCard);
-        assertTrue(pile.contains(playRandomCard));
+        var playCard = new Card(Face.THREE, Suit.HEARTS, 30);
+        if (canPlayerPlayCard(playCard)) addCardToPile(playCard);
+        assertTrue(pile.contains(playCard));
     }
 
     @Test
     @DisplayName("If pile is not empty, play card of same suit")
     public void ifPileIsNotEmpty_PlayCardOfSameSuit() {
-        var firstCard = new Card(Face.TWO, Suit.HEARTS, 20);
+        var firstCard = new Card(Face.TWO, Suit.HEARTS, 15);
         addCardToPile(firstCard);
         var playSameSuitCard = new Card(Face.THREE, Suit.HEARTS, 3);
         if (canPlayerPlayCard(playSameSuitCard)) addCardToPile(playSameSuitCard);
@@ -57,7 +55,7 @@ class GameTest {
     @Test
     @DisplayName("If pile is not empty, don't play card of different suit")
     public void ifPileIsNotEmpty_DontPlayCardOfDifferentSuit() {
-        var firstCard = new Card(Face.TWO, Suit.HEARTS, 20);
+        var firstCard = new Card(Face.TWO, Suit.HEARTS, 15);
         addCardToPile(firstCard);
         var dontPlayDifferentSuit = new Card(Face.THREE, Suit.CLUBS, 3);
         if (canPlayerPlayCard(dontPlayDifferentSuit)) addCardToPile(dontPlayDifferentSuit);
@@ -77,7 +75,7 @@ class GameTest {
     @Test
     @DisplayName("If card on top of pile is Jack, follow it with a valid card")
     public void ifCardOnTopOfPileIsJackOrEight_FollowItWithACard() {
-        var jackOfHearts = new Card(Face.JACK, Suit.HEARTS, 20);
+        var jackOfHearts = new Card(Face.JACK, Suit.HEARTS, 15);
         addCardToPile(jackOfHearts);
         var followWithCard = new Card(Face.THREE, Suit.HEARTS, 3);
         if (canPlayerPlayCard(followWithCard)) {
@@ -89,12 +87,249 @@ class GameTest {
     @Test
     @DisplayName("If card on top of pile is Eight, follow it with a valid card")
     public void ifCardOnTopOfPileIsEight_FollowItWithACard() {
-        var eightOfHearts = new Card(Face.EIGHT, Suit.HEARTS, 20);
+        var eightOfHearts = new Card(Face.EIGHT, Suit.HEARTS, 15);
         addCardToPile(eightOfHearts);
         var followWithCard = new Card(Face.THREE, Suit.HEARTS, 3);
         if (canPlayerPlayCard(followWithCard)) {
             if (canFollowCard()) addCardToPile(followWithCard);
         }
         assertTrue(pile.contains(followWithCard));
+    }
+
+    @Test
+    @DisplayName("If card on top of pile is Two, damage card on pile")
+    public void ifCardOnTopOfPileIsTwo_DamageCardOnPile() {
+        var twoOfHearts = new Card(Face.TWO, Suit.HEARTS, 15);
+        addCardToPile(twoOfHearts);
+        assertTrue(isDamageCardOnPile());
+    }
+
+    @Test
+    @DisplayName("If card on top of pile is Three and is Game.JOKER_MODE, damage card on pile")
+    public void ifCardOnTopOfPileIsThree_DamageCardOnPile() {
+        JOKER_MODE = true;
+        var threeOfHearts = new Card(Face.THREE, Suit.HEARTS, 30);
+        addCardToPile(threeOfHearts);
+        assertTrue(isDamageCardOnPile());
+    }
+
+    @Test
+    @DisplayName("If card on top of pile is Joker, damage card on pile")
+    public void ifCardOnTopOfPileIsJoker_DamageCardOnPile() {
+        JOKER_MODE = true;
+        var jokerOfHearts = new Card(Face.JOKER, Suit.JOKER_F, 60);
+        addCardToPile(jokerOfHearts);
+        assertTrue(isDamageCardOnPile());
+    }
+
+    @Test
+    @DisplayName("If card on top of pile is Three and is not JOKER_MODE, not a damage card")
+    public void ifCardOnTopOfPileIsThreeAndNotJokerMode_DamageCardOnPile() {
+        JOKER_MODE = false;
+        var threeOfHearts = new Card(Face.THREE, Suit.HEARTS, 30);
+        addCardToPile(threeOfHearts);
+        assertFalse(isDamageCardOnPile());
+    }
+
+    @Test
+    @DisplayName("If card on top of pile is Joker and is not Joker Mode, not a damage card")
+    public void ifCardOnTopOfPileIsJokerAndIsNotJokerMode_DamageCardOnPile() {
+        JOKER_MODE = false;
+        var jokerOfHearts = new Card(Face.JOKER, Suit.JOKER_F, 60);
+        addCardToPile(jokerOfHearts);
+        assertFalse(isDamageCardOnPile());
+    }
+
+    @Test
+    @DisplayName("If card on top is Two, player takes damage")
+    public void ifCardOnTopIsTwo_PlayerTakesDamage() {
+        Player player = new Player("Player");
+        var twoOfHearts = new Card(Face.TWO, Suit.HEARTS, 15);
+        addCardToPile(twoOfHearts);
+        player.pickTwoCards(deck);
+        var cardsPicked = player.getHand().size();
+        assertEquals(2, cardsPicked);
+    }
+
+    @Test
+    @DisplayName("If card on top is Two, and is not Joker Mode player takes damage")
+    public void ifCardOnTopIsTwoAndIsJokerMode_PlayerTakesDamage() {
+        JOKER_MODE = false;
+        Player player = new Player("Player");
+        var twoOfHearts = new Card(Face.TWO, Suit.HEARTS, 15);
+        addCardToPile(twoOfHearts);
+        player.pickTwoCards(deck);
+        var cardsPicked = player.getHand().size();
+        assertEquals(2, cardsPicked);
+    }
+
+    @Test
+    @DisplayName("If card on top is Two, player can counter damage")
+    public void ifCardOnTopIsTwo_PlayerCanCounterDamage() {
+        Player player = new Player("Player");
+        addCardToPile(new Card(Face.TWO, Suit.HEARTS, 15));
+        var cardPlayedToCounter = new Card(Face.TWO, Suit.SPADES, 20);
+        var damageCountered = player.damageCountered(player, cardPlayedToCounter);
+        assertTrue(damageCountered);
+    }
+
+    @Test
+    @DisplayName("If card on top is Two, Ace Of Spades can counter damage")
+    public void ifCardOnTopIsTwo_AceOfSpadesCanCounterDamage() {
+        Player player = new Player("Player");
+        addCardToPile(new Card(Face.TWO, Suit.HEARTS, 15));
+        var cardPlayedToCounter = new Card(Face.ACE, Suit.SPADES, 60);
+        var damageCountered = player.damageCountered(player, cardPlayedToCounter);
+        assertTrue(damageCountered);
+    }
+
+    @Test
+    @DisplayName("If card on top is Two, only Ace Of Spades and Two can counter damage")
+    public void ifCardOnTopIsTwo_OnlyAceOfSpadesCanCounterDamage() {
+        Player player = new Player("Player");
+        addCardToPile(new Card(Face.TWO, Suit.HEARTS, 20));
+        assertAll("Only Ace Of Spades and Two can counter damage",
+                () -> assertFalse(player.damageCountered(player, new Card(Face.ACE, Suit.CLUBS, 15))),
+                () -> assertFalse(player.damageCountered(player, new Card(Face.ACE, Suit.DIAMONDS, 15))),
+                () -> assertFalse(player.damageCountered(player, new Card(Face.ACE, Suit.HEARTS, 15))),
+                () -> assertTrue(player.damageCountered(player, new Card(Face.TWO, Suit.SPADES, 20)))
+        );
+    }
+    @Test
+    @DisplayName("If card on top is Two and is Joker Mode, only Ace Of Spades, Two, Three and Joker can counter damage")
+    public void ifCardOnTopIsTwoAndIJokerMode_OnlyAceOfSpadesCanCounterDamage() {
+        JOKER_MODE = true;
+        Player player = new Player("Player");
+        addCardToPile(new Card(Face.TWO, Suit.HEARTS, 20));
+        assertAll("Ace, Two, Three and Joker can counter damage",
+                () -> assertFalse(player.damageCountered(player, new Card(Face.ACE, Suit.CLUBS, 15))),
+                () -> assertFalse(player.damageCountered(player, new Card(Face.ACE, Suit.DIAMONDS, 15))),
+                () -> assertFalse(player.damageCountered(player, new Card(Face.ACE, Suit.HEARTS, 15))),
+                () -> assertTrue(player.damageCountered(player, new Card(Face.TWO, Suit.SPADES, 20))),
+                () -> assertTrue(player.damageCountered(player, new Card(Face.THREE, Suit.SPADES, 30))),
+                () -> assertTrue(player.damageCountered(player, new Card(Face.JOKER, Suit.JOKER_F, 50)))
+        );
+    }
+
+    @Test
+    @DisplayName("If card on top is Three and is Joker Mode, player takes damage")
+    public void ifCardOnTopIsThree_PlayerTakesDamage() {
+        JOKER_MODE = true;
+        Player player = new Player("Player");
+        var threeOfHearts = new Card(Face.THREE, Suit.HEARTS, 30);
+        addCardToPile(threeOfHearts);
+        if (JOKER_MODE) player.pickThreeCards(deck);
+        var cardsPicked = player.getHand().size();
+        assertEquals(3, cardsPicked);
+    }
+
+    @Test
+    @DisplayName("If card on top is Three and is not Joker Mode, player doesn't take damage")
+    public void ifCardOnTopIsThreeAndIsNotJokerMode_PlayerNeverTakesDamage() {
+        JOKER_MODE = false;
+        Player player = new Player("Player");
+        var threeOfHearts = new Card(Face.THREE, Suit.HEARTS, 3);
+        addCardToPile(threeOfHearts);
+        if (JOKER_MODE) player.pickThreeCards(deck);
+        var cardsPicked = player.getHand().size();
+        assertEquals(0, cardsPicked);
+    }
+
+    @Test
+    @DisplayName("If card on top is Three and is Joker Mode, player can counter damage")
+    public void ifCardOnTopIsThree_PlayerCanCounterDamage() {
+        JOKER_MODE = true;
+        Player player = new Player("Player");
+        addCardToPile(new Card(Face.THREE, Suit.HEARTS, 15));
+        var cardPlayedToCounter = new Card(Face.THREE, Suit.SPADES, 15);
+        var damageCountered = JOKER_MODE && player.damageCountered(player, cardPlayedToCounter);
+        assertTrue(damageCountered);
+    }
+
+    @Test
+    @DisplayName("If card on top is Three and is Joker Mode, Ace Of Spades can counter damage")
+    public void ifCardOnTopIsThree_AceOfSpadesCanCounterDamage() {
+        JOKER_MODE = true;
+        Player player = new Player("Player");
+        addCardToPile(new Card(Face.THREE, Suit.HEARTS, 15));
+        var cardPlayedToCounter = new Card(Face.ACE, Suit.SPADES, 60);
+        var damageCountered = JOKER_MODE && player.damageCountered(player, cardPlayedToCounter);
+        assertTrue(damageCountered);
+    }
+
+    @Test
+    @DisplayName("If card on top is Three and is Joker Mode, only Ace Of Spades, Two, Three and Joker can counter damage")
+    public void ifCardOnTopIsThree_OnlyAceOfSpadesCanCounterDamage() {
+        JOKER_MODE = true;
+        Player player = new Player("Player");
+        assertAll("Ace, Two, Three and Joker can counter damage",
+                () -> assertFalse(player.damageCountered(player, new Card(Face.ACE, Suit.CLUBS, 15))),
+                () -> assertFalse(player.damageCountered(player, new Card(Face.ACE, Suit.DIAMONDS, 15))),
+                () -> assertFalse(player.damageCountered(player, new Card(Face.ACE, Suit.HEARTS, 15))),
+                () -> assertTrue(player.damageCountered(player, new Card(Face.TWO, Suit.SPADES, 20))),
+                () -> assertTrue(player.damageCountered(player, new Card(Face.THREE, Suit.SPADES, 30))),
+                () -> assertTrue(player.damageCountered(player, new Card(Face.JOKER, Suit.JOKER_F, 50)))
+        );
+    }
+
+    @Test
+    @DisplayName("If card on top is Joker and is Joker Mode, player takes damage")
+    public void ifCardOnTopIsJoker_PlayerTakesDamage() {
+        JOKER_MODE = true;
+        Player player = new Player("Player");
+        var joker = new Card(Face.JOKER, Suit.JOKER_M, 50);
+        addCardToPile(joker);
+        if (JOKER_MODE) player.pickFiveCards(deck);
+        var cardsPicked = player.getHand().size();
+        assertEquals(5, cardsPicked);
+    }
+
+    @Test
+    @DisplayName("If card on top is Joker and is not Joker Mode, player doesn't take damage")
+    public void ifCardOnTopIsJokerAndIsNotJokerMode_PlayerNeverTakesDamage() {
+        JOKER_MODE = false;
+        Player player = new Player("Player");
+        var joker = new Card(Face.THREE, Suit.HEARTS, 3);
+        addCardToPile(joker);
+        if (JOKER_MODE) player.pickFiveCards(deck);
+        var cardsPicked = player.getHand().size();
+        assertEquals(0, cardsPicked);
+    }
+
+    @Test
+    @DisplayName("If card on top is Joker and is Joker Mode, player can counter damage")
+    public void ifCardOnTopIsJoker_PlayerCanCounterDamage() {
+        JOKER_MODE = true;
+        Player player = new Player("Player");
+        addCardToPile(new Card(Face.JOKER, Suit.JOKER_M, 50));
+        var cardPlayedToCounter = new Card(Face.JOKER, Suit.JOKER_M, 50);
+        var damageCountered = JOKER_MODE && player.damageCountered(player, cardPlayedToCounter);
+        assertTrue(damageCountered);
+    }
+
+    @Test
+    @DisplayName("If card on top is Joker and is Joker Mode, Ace Of Spades can counter damage")
+    public void ifCardOnTopIsJoker_AceOfSpadesCanCounterDamage() {
+        JOKER_MODE = true;
+        Player player = new Player("Player");
+        addCardToPile(new Card(Face.THREE, Suit.HEARTS, 15));
+        var cardPlayedToCounter = new Card(Face.ACE, Suit.SPADES, 60);
+        var damageCountered = JOKER_MODE && player.damageCountered(player, cardPlayedToCounter);
+        assertTrue(damageCountered);
+    }
+
+    @Test
+    @DisplayName("If card on top is Joker and is Joker Mode, only Ace Of Spades, Two, Three and Joker can counter damage")
+    public void ifCardOnTopIsJoker_OnlyAceOfSpadesCanCounterDamage() {
+        JOKER_MODE = true;
+        Player player = new Player("Player");
+        assertAll("Ace, Two, Three and Joker can counter damage",
+                () -> assertFalse(player.damageCountered(player, new Card(Face.ACE, Suit.CLUBS, 15))),
+                () -> assertFalse(player.damageCountered(player, new Card(Face.ACE, Suit.DIAMONDS, 15))),
+                () -> assertFalse(player.damageCountered(player, new Card(Face.ACE, Suit.HEARTS, 15))),
+                () -> assertTrue(player.damageCountered(player, new Card(Face.TWO, Suit.SPADES, 20))),
+                () -> assertTrue(player.damageCountered(player, new Card(Face.THREE, Suit.SPADES, 30))),
+                () -> assertTrue(player.damageCountered(player, new Card(Face.JOKER, Suit.JOKER_F, 50)))
+        );
     }
 }
