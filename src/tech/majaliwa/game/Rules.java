@@ -12,11 +12,14 @@ public class Rules {
         // start of game
         if (pile.isEmpty()) return false;
 
+        // if it's not your turn
+        if (!PLAYER_TURN) return false;
+
         // can't pick twice without playing or passing
-        if (playerPickCount == 1 && PLAYER_TURN) return false;
+        if (playerPickCount == 1) return false;
 
         // if attacked by a damage card
-        return !damageCardOnPile() && PLAYER_TURN;
+        return !damageCardOnPile();
     }
 
     public static boolean isDamageCardOnPile() {
