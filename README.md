@@ -34,6 +34,5 @@ The goal of the game is to be the first player to get rid of all your cards.
    - The game can be played over multiple rounds, and the overall winner is the player with the most round wins.
 
 ## Note
-This README provides a basic overview of the rules and gameplay for Matatu! For more detailed instructions or variations, please refer to additional resources or adapt the rules as needed for your gaming preferences.
-
+This README provides a basic overview of the rules and gameplay for Matatu!
 Enjoy playing Matatu!
