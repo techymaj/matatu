@@ -209,16 +209,20 @@ public class User {
     }
 
     public static <T extends User> void checkIfPlayerWon(T user) {
-
-        if (user.getHand().isEmpty()) {
-            if (user instanceof Player) {
-                System.out.println("Congratulations, " + user.getName() + " you won!");
-            } else {
-                System.out.println(user.getName() + " won!");
-            }
-            GAME_OVER = true;
-            restartGame();
+        var userHandIsEmpty = user.getHand().isEmpty();
+        if (userHandIsEmpty) {
+            winnerIs(user);
         }
+    }
+
+    private static <T extends User> void winnerIs(T user) {
+        if (user instanceof Player) {
+            System.out.println("Congratulations, " + user.getName() + " you won!");
+        } else {
+            System.out.println(user.getName() + " won!");
+        }
+        GAME_OVER = true;
+        restartGame();
     }
 
     public static void addCardToPile(Card card) {
