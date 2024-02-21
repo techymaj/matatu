@@ -1,4 +1,4 @@
-package tech.majaliwa;
+package tech.majaliwa.game;
 
 public enum Face {
     TWO("2"),
@@ -22,8 +22,8 @@ public enum Face {
         this.face = face;
     }
 
-    public static Face getFace(int rank) {
-        return Face.values()[rank];
+    public static Face getFace(int cardNumber) {
+        return Face.values()[cardNumber];
     }
 
     public String getFace() {

@@ -1,6 +1,6 @@
 package tech.majaliwa.game;
 
-import tech.majaliwa.Face;
+import tech.majaliwa.game.Face;
 
 import java.util.ArrayList;
 import java.util.Objects;

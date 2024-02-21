@@ -1,6 +1,6 @@
 package tech.majaliwa.game;
 
-import tech.majaliwa.Face;
+import tech.majaliwa.game.Face;
 
 public record Card(
         Face face,

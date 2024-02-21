@@ -1,7 +1,5 @@
 package tech.majaliwa.game;
 
-import tech.majaliwa.Face;
-
 import java.util.Objects;
 
 import static tech.majaliwa.game.Game.*;

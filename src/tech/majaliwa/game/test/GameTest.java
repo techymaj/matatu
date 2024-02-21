@@ -3,7 +3,7 @@ package tech.majaliwa.game.test;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
-import tech.majaliwa.Face;
+import tech.majaliwa.game.Face;
 import tech.majaliwa.game.Card;
 import tech.majaliwa.game.Player;
 import tech.majaliwa.game.Suit;
