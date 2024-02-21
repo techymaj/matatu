@@ -1,7 +1,5 @@
 package tech.majaliwa.game;
 
-import tech.majaliwa.game.Face;
-
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Scanner;
@@ -219,7 +217,7 @@ public class User {
                 System.out.println(user.getName() + " won!");
             }
             GAME_OVER = true;
-            restartGame(new Scanner(System.in));
+            restartGame();
         }
     }
 

@@ -62,31 +62,37 @@ public class Game {
         printDeck("Current pile", pile, 1);
     }
 
-    public static void restartGame(Scanner scanner) {
+    public static void restartGame() {
         System.out.println();
         System.out.println("Do you want to play again? (y/n)");
         var player = users.get(0);
         var ai = users.get(1);
         var input = scanner.nextLine();
 
-        if (input.equalsIgnoreCase("y")) {
-            System.out.println("Restarting game...");
-            pile.clear();
-            deck.clear();
-            player.getHand().clear();
-            ai.getHand().clear();
-            GAME_OVER = false;
-            setGameMode();
-            gameUsers(player, ai);
-            player.setInitialHand(deck);
-            ai.setInitialHand(deck);
-            gameInSession(player, ai);
-        } else if (input.equalsIgnoreCase("n")) {
-            System.out.println("Thanks for playing!");
-            System.exit(0);
-        } else {
-            System.out.println("Invalid input");
-            restartGame(scanner);
+        checkInputToRestartOrNot(input, player, ai);
+    }
+
+    private static void checkInputToRestartOrNot(String input, User player, User ai) {
+        switch (input.toLowerCase()) {
+            case "y", "yes" -> {
+                System.out.println("Restarting game...");
+                pile.clear();
+                deck.clear();
+                player.getHand().clear();
+                ai.getHand().clear();
+                GAME_OVER = false;
+                setGameMode();
+                gameUsers(player, ai);
+                gameInSession(player, ai);
+            }
+            case "n", "no" -> {
+                System.out.println("Thanks for playing!");
+                System.exit(0);
+            }
+            default -> {
+                System.out.println("Invalid input");
+                restartGame();
+            }
         }
     }
 
@@ -138,22 +144,31 @@ public class Game {
     private static <T extends  User> void gameInSession(T player, T ai) {
 
         do {
-            getPile();
-            if (PLAYER_TURN) {
-                if (player instanceof Player turn) {
-                    turn.playerTurn();
-                    PLAYER_TURN = false;
-                }
-            } else {
-                if (ai instanceof AI turn) {
-                    turn.aiTurn();
-                    PLAYER_TURN = true;
-                }
-            }
+            playTheGame(player, ai);
         } while (!GAME_OVER);
 
-        restartGame(scanner);
+        restartGame();
         scanner.close();
+    }
+
+    private static <T extends User> void playTheGame(T player, T ai) {
+        getPile();
+        if (PLAYER_TURN) {
+            switchTo(player);
+        } else {
+            switchTo(ai);
+        }
+    }
+
+    private static <T extends User> void switchTo(T user) {
+        if (user instanceof AI turn) {
+            turn.aiTurn();
+            PLAYER_TURN = true;
+        }
+        if (user instanceof Player turn) {
+            turn.playerTurn();
+            PLAYER_TURN = false;
+        }
     }
 
     public static void getPile() {
