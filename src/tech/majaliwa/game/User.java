@@ -46,15 +46,17 @@ public class User {
     public Card playCard(int position) {
         var iterator = this.hand.listIterator();
 
-        var cardToPlay = this.hand.get(position - 1);
+        var cardPositionToPlay = this.hand.get(position - 1);
         while (iterator.hasNext()) {
-            var card = iterator.next();
-            if (card.equals(cardToPlay)) {
-                if (canPlayerPlayCard(card)) {
+            var searchedCard = iterator.next();
+            var cardMatchesPlayedPosition = searchedCard.equals(cardPositionToPlay);
+            if (cardMatchesPlayedPosition) {
+                var cardCanBePlayed = canPlayerPlayCard(searchedCard);
+                if (cardCanBePlayed) {
+                    addCardToPile(searchedCard);
                     iterator.remove();
-                    addCardToPile(card);
                     setAskedSuit(null);  // restrict follow with wrong card e.g. (8♦, 8♠, 9♦) with askedSuit ♦ is wrong
-                    return card;
+                    return searchedCard;
                 }
                 System.out.println("Invalid card. Try again");
                 var topCard = Objects.requireNonNull(getTopCard());
@@ -120,26 +122,7 @@ public class User {
             System.out.println("There is nothing left in the deck");
             return -1;
         }
-
-        try {
-            var picked = deck.subList(0, 2);
-            ArrayList<Card> arrayList = new ArrayList<>(picked);
-
-            this.hand.addAll(arrayList);
-
-            if (this instanceof Player) {
-                System.out.println("Picked 2");
-            } else {
-                System.out.println(this.name + " picked 2");
-            }
-            System.out.println();
-            picked.clear();
-        } catch (IndexOutOfBoundsException e) {
-            System.out.println("Not enough cards in the deck");
-            return -1;
-        }
-
-        return 1;
+        return makeTakingDamageSafe(deck, 2, "Picked 2", " picked 2");
     }
 
     public int pickThreeCards(ArrayList<Card> deck) {
@@ -147,25 +130,7 @@ public class User {
             System.out.println("There is nothing left in the deck");
             return -1;
         }
-        try {
-            var picked = deck.subList(0, 3);
-            ArrayList<Card> arrayList = new ArrayList<>(picked);
-
-            this.hand.addAll(arrayList);
-
-            if (this instanceof Player) {
-                System.out.println("Picked 3");
-            } else {
-                System.out.println(this.name + " picked 3");
-            }
-            System.out.println();
-            picked.clear();
-        } catch (IndexOutOfBoundsException e) {
-            System.out.println("Not enough cards in the deck");
-            return -1;
-        }
-
-        return 1;
+        return makeTakingDamageSafe(deck, 3, "Picked 3", " picked 3");
     }
 
     public int pickFiveCards(ArrayList<Card> deck) {
@@ -173,17 +138,20 @@ public class User {
             System.out.println("There is nothing left in the deck");
             return -1;
         }
+        return makeTakingDamageSafe(deck, 5, "Picked 5", " picked 5");
+    }
 
+    private Integer makeTakingDamageSafe(ArrayList<Card> deck, int cardsPicked, String user, String ai) {
         try {
-            var picked = deck.subList(0, 5);
+            var picked = deck.subList(0, cardsPicked);
             ArrayList<Card> arrayList = new ArrayList<>(picked);
 
             this.hand.addAll(arrayList);
 
             if (this instanceof Player) {
-                System.out.println("Picked 5");
+                System.out.println(user);
             } else {
-                System.out.println(this.name + " picked 5");
+                System.out.println(this.name + ai);
             }
             System.out.println();
             picked.clear();
@@ -191,7 +159,6 @@ public class User {
             System.out.println("Not enough cards in the deck");
             return -1;
         }
-
         return 1;
     }
 
