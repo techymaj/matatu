@@ -72,18 +72,20 @@ public class User {
     }
 
     public static void pickCard(User user) {
-        if (deck.isEmpty()) {
+        var theDeckIsEmpty = deck.isEmpty();
+        if (theDeckIsEmpty) {
             reshuffleDeckAndContinuePlaying();
         }
-        var cardToPick = deck.getFirst();
+        var pickedCard = deck.getFirst();
         deck.removeFirst();
 
-        user.getHand().add(cardToPick);
+        var addToHand = user.getHand();
+        addToHand.add(pickedCard);
 
         if (user instanceof Player) {
-            System.out.println("You picked: " + cardToPick);
+            System.out.println("You picked: " + pickedCard);
         } else {
-            System.out.println(user.name + " picked: " + cardToPick);
+            System.out.println(user.name + " picked: " + pickedCard);
         }
     }
 
