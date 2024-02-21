@@ -44,59 +44,88 @@ public class Player extends User {
 
     public void checkInput() {
         try {
-            var input = scanner.nextLine();
-            if (input.equalsIgnoreCase("p")) {
-                if (canPlayerPickACard()) {
-                    pickCard(this);
-                    playerPickCount++;
-                } else {
-                    if (Rules.isDamageCardOnPile())
-                        System.out.println("Play a card to counter or type 'accept' to accept damage.");
-                    else {
-                        System.out.println("You can't pick a card yet. Play a card or pass your turn.");
-                    }
-                }
-                playerActions();
-                checkInput();
-            } else if (input.equalsIgnoreCase("pass")) {
-                if (canPlayerPassTurn()) {
-                    System.out.println("You have passed your turn");
-                    playerPickCount = 0;
-                    PLAYER_TURN = false;
-                } else {
-                    System.out.println("You can't pass your turn yet");
-                    playerActions();
-                    checkInput();
-                }
-            } else {
-                try {
-                    var cardPlayed = playCard(Integer.parseInt(input));
-                    if (cardPlayed != null) {
-                        if (canFollowCard()) {
-                            System.out.println("You can follow this card: " + cardPlayed);
-                            playerPickCount = 0;
-                            playerActions();
-                            checkInput();
-                        }
-                        if (isAskingCardOnPile()) {
-                            checkIfPlayerWon(this);
-                            askForSuit(scanner);
-                        }
-                        checkIfPlayerWon(this);
-                        playerPickCount = 0;
-                        PLAYER_TURN = false;
-                    }
-                } catch (IndexOutOfBoundsException e) {
-                    System.out.println("Wrong card position.");
-                    playerActions();
-                    checkInput();
-                }
-            }
+            tryThisUserInput();
         } catch (NumberFormatException nfe) {
             System.out.println("Invalid input");
             playerActions();
             checkInput();
         }
+    }
+
+    private void tryThisUserInput() {
+        var input = scanner.nextLine();
+        switch (input.toLowerCase()) {
+            case "p" -> userInputIsP();
+            case "pass" -> userInputIsPass();
+            default -> userInputIsInvalid(input);
+        }
+    }
+
+    private void userInputIsInvalid(String input) {
+        try {
+            tryPlayingACardPosition(input);
+        } catch (IndexOutOfBoundsException e) {
+            System.out.println("Wrong card position.");
+            playerActions();
+            checkInput();
+        }
+    }
+
+    private void userInputIsP() {
+        var playerCanPickACard = canPlayerPickACard();
+        if (playerCanPickACard) {
+            pickCard(this);
+            playerPickCount++;
+        } else {
+            playerCantPickACard();
+        }
+        playerActions();
+        checkInput();
+    }
+
+    private static void playerCantPickACard() {
+        if (Rules.isDamageCardOnPile())
+            System.out.println("Play a card to counter or type 'accept' to accept damage.");
+        else {
+            System.out.println("You can't pick a card yet. Play a card or pass your turn.");
+        }
+    }
+
+    private void userInputIsPass() {
+        if (canPlayerPassTurn()) {
+            System.out.println("You have passed your turn");
+            playerPickCount = 0;
+            PLAYER_TURN = false;
+        } else {
+            System.out.println("You can't pass your turn yet");
+            playerActions();
+            checkInput();
+        }
+    }
+
+    private void tryPlayingACardPosition(String input) {
+        var cardPlayed = playCard(Integer.parseInt(input));
+        if (cardPlayed != null) {
+            playThisCardIfCardPlayedIsNotNull(cardPlayed);
+        }
+    }
+
+    private void playThisCardIfCardPlayedIsNotNull(Card cardPlayed) {
+        var theCardPlayedCanBeFollowed = canFollowCard();
+        if (theCardPlayedCanBeFollowed) {
+            System.out.println("You can follow this card: " + cardPlayed);
+            playerPickCount = 0;
+            playerActions();
+            checkInput();
+        }
+        var theCardPlayedIsAnAskingCard = isAskingCardOnPile();
+        if (theCardPlayedIsAnAskingCard) {
+            checkIfPlayerWon(this);
+            askForSuit(scanner);
+        }
+        checkIfPlayerWon(this);
+        playerPickCount = 0;
+        PLAYER_TURN = false;
     }
 
     private Suit askingCountered(Card cardPlayed) {
@@ -111,19 +140,23 @@ public class Player extends User {
     public void playerActions() {
         System.out.println("It's your turn " + this.getName());
         if (!pile.isEmpty()) {
-            var topCard = Objects.requireNonNull(getTopCard());
-            System.out.println("Top card: " + topCard);
-            System.out.println("Damage card? " + (damageCardOnPile() ? "Yes" : "No"));
-
-            if (getAskedSuit() != null) {
-                System.out.println("Asked suit: " + getAskedSuit() + " - " + getAskedSuit().getUnicode());
-            }
-            System.out.println("Pick count: " + playerPickCount);
+            printActionsIfPileIsNotEmpty();
         }
         System.out.println("Your hand: ");
         this.getHand().forEach(
                 card -> System.out.print(card + "(" + (this.getHand().indexOf(card) + 1) + ")" + " ")
         );
         System.out.println();
+    }
+
+    private static void printActionsIfPileIsNotEmpty() {
+        var topCard = Objects.requireNonNull(getTopCard());
+        System.out.println("Top card: " + topCard);
+        System.out.println("Damage card? " + (damageCardOnPile() ? "Yes" : "No"));
+
+        if (getAskedSuit() != null) {
+            System.out.println("Asked suit: " + getAskedSuit() + " - " + getAskedSuit().getUnicode());
+        }
+        System.out.println("Pick count: " + playerPickCount);
     }
 }
