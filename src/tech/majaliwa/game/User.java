@@ -229,7 +229,7 @@ public class User {
         System.out.println("Choose a suit: (H)earts, (S)pades, (C)lubs, (D)iamonds");
         var suit = scanner.nextLine().toUpperCase();
 
-        switch (suit) {
+        switch (suit.toUpperCase()) {
             case "H" -> setAskedSuit(Suit.HEARTS);
             case "S" -> setAskedSuit(Suit.SPADES);
             case "C" -> setAskedSuit(Suit.CLUBS);
