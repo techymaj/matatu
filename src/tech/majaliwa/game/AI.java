@@ -16,12 +16,12 @@ public class AI extends User {
         setDamageCardOnPile(false);
 
         var cardPlayed = aiPlaysCard();
-
         if (cardPlayed == null) {
-           return;
+            return;
         }
 
-        if (canFollowCard()) {
+        var aiCanFollowThisCard = canFollowCard();
+        if (aiCanFollowThisCard) {
             aiTurn();
         }
     }
@@ -30,7 +30,8 @@ public class AI extends User {
         var iterator = getHand().listIterator();
         while (iterator.hasNext()) {
             var card = iterator.next();
-            if (canPlayerPlayCard(card)) {
+            var aiCanPlayThisCard = canPlayerPlayCard(card);
+            if (aiCanPlayThisCard) {
                 iterator.remove();
                 addCardToPile(card);
                 System.out.println("AI played: " + card);
