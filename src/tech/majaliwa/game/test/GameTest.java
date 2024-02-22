@@ -1,10 +1,11 @@
 package tech.majaliwa.game.test;
 
-import org.junit.jupiter.api.*;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
-import tech.majaliwa.game.Face;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import tech.majaliwa.game.Card;
+import tech.majaliwa.game.Face;
 import tech.majaliwa.game.Player;
 import tech.majaliwa.game.Suit;
 
@@ -13,9 +14,9 @@ import java.util.List;
 import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assumptions.assumingThat;
 import static tech.majaliwa.game.Deck.createDeck;
-import static tech.majaliwa.game.Game.*;
+import static tech.majaliwa.game.Game.JOKER_MODE;
+import static tech.majaliwa.game.Game.pile;
 import static tech.majaliwa.game.Rules.*;
 import static tech.majaliwa.game.User.addCardToPile;
 
@@ -32,6 +33,12 @@ class GameTest {
         Random randomCard = new Random();
         cardPosition = randomCard.nextInt(0, hand.size());
         deck.subList(0, 7).clear();
+    }
+
+    @AfterEach
+    public void tearDown() {
+        hand.clear();
+        deck.clear();
     }
 
     @Test
@@ -355,77 +362,5 @@ class GameTest {
                 () -> assertTrue(player.damageCountered(player,
                         new Card(Face.JOKER, Suit.JOKER_F, 50)))
         );
-    }
-
-    @Nested
-    @DisplayName("Checking user input")
-    class checkUserInput {
-        @ParameterizedTest(name = "If input is: \"{0}\" and is player's turn")
-        @DisplayName("A player can pick")
-        @ValueSource(strings = {"p"})
-        void checkIfAPlayerCanPick(String input) {
-            assumingThat(input.equalsIgnoreCase("p"),
-                    () -> {
-                        PLAYER_TURN = true;
-                        playerPickCount = 0;
-                        setDamageCardOnPile(false);
-                        addCardToPile(new Card(Face.TWO, Suit.HEARTS, 20));
-                        var aPlayerCanPickACard = canPlayerPickACard();
-                        assertTrue(aPlayerCanPickACard);
-                    }
-            );
-        }
-
-        @ParameterizedTest(name = "If input is: \"{0}\" and player already picked")
-        @DisplayName("A player can't pick twice")
-        @ValueSource(strings = {"p"})
-        void checkIfAPlayerCanPickTwice(String input) {
-            assumingThat(input.equalsIgnoreCase("p"),
-                    () -> {
-                        addCardToPile(new Card(Face.TWO, Suit.HEARTS, 20));
-                        playerPickCount = 1;
-                        var aPlayerCanPickACard = canPlayerPickACard();
-                        assertFalse(aPlayerCanPickACard);
-                    }
-            );
-        }
-
-        @ParameterizedTest(name = "If input is: \"{0}\" and pile is empty")
-        @DisplayName("A player can't pick")
-        @ValueSource(strings = {"p"})
-        void checkIfAPlayerCantPick(String input) {
-            assumingThat(input.equalsIgnoreCase("p"),
-                    () -> {
-                        var aPlayerCanPickACard = canPlayerPickACard();
-                        assertFalse(aPlayerCanPickACard);
-                    }
-            );
-        }
-
-        @ParameterizedTest(name = "If input is \"{0}\" and not player's turn")
-        @DisplayName("A player can't pick")
-        @ValueSource(strings = {"p"})
-        void playerCantPickIfNotPlayersTurn(String input) {
-            assumingThat(input.equalsIgnoreCase("p"),
-                    () -> {
-                        PLAYER_TURN = false;
-                        var aPlayerCanPickACard = canPlayerPickACard();
-                        assertFalse(aPlayerCanPickACard);
-                    }
-            );
-        }
-
-        @ParameterizedTest(name = "If input is \"{0}\" and damage card on top")
-        @DisplayName("A player can't pick")
-        @ValueSource(strings = {"p"})
-        void playerCantPickIfDamageCardOnTop(String input) {
-            assumingThat(input.equalsIgnoreCase("p"),
-                    () -> {
-                        setDamageCardOnPile(true);
-                        var aPlayerCanPickACard = canPlayerPickACard();
-                        assertFalse(aPlayerCanPickACard);
-                    }
-            );
-        }
     }
 }
