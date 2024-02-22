@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assumptions.assumingThat;
 import static tech.majaliwa.game.Deck.createDeck;
 import static tech.majaliwa.game.Game.*;
-import static tech.majaliwa.game.Game.setDamageCardOnPile;
+import static tech.majaliwa.game.Rules.canPlayerPassTurn;
 import static tech.majaliwa.game.Rules.canPlayerPickACard;
 import static tech.majaliwa.game.User.addCardToPile;
 
@@ -31,6 +31,7 @@ public class UserInputTest {
 
     @BeforeEach
     public void setUp() {
+        pile = new ArrayList<>();
         deck = createDeck(true);
         List<Card> serve = deck.subList(0, 7);
         hand = new ArrayList<>(serve);
@@ -44,6 +45,7 @@ public class UserInputTest {
         hand.clear();
         deck.clear();
     }
+
     @Nested
     @DisplayName("Checking user input")
     class checkUserInput {
@@ -111,6 +113,60 @@ public class UserInputTest {
                         setDamageCardOnPile(true);
                         var aPlayerCanPickACard = canPlayerPickACard();
                         assertFalse(aPlayerCanPickACard);
+                    }
+            );
+        }
+
+        @ParameterizedTest(name = "If input is \"{0}\" and pile is empty")
+        @DisplayName("A player can't pass")
+        @ValueSource(strings = {"pass"})
+        void playerCantPassIfPileIsEmpty(String input) {
+            assumingThat(input.equalsIgnoreCase("pass"),
+                    () -> {
+                        var aPlayerCanTPassTurn = canPlayerPassTurn();
+                        assertFalse(aPlayerCanTPassTurn);
+                    }
+            );
+        }
+
+        @ParameterizedTest(name = "If input is \"{0}\" and has been attacked by a damage card")
+        @DisplayName("A player can't pass")
+        @ValueSource(strings = {"pass"})
+        void playerCantPassIfDamageCardOnTop(String input) {
+            assumingThat(input.equalsIgnoreCase("pass"),
+                    () -> {
+                        addCardToPile(new Card(Face.TWO, Suit.HEARTS, 20));
+                        setDamageCardOnPile(true);
+                        var aPlayerCanTPassTurn = canPlayerPassTurn();
+                        assertFalse(aPlayerCanTPassTurn);
+                    }
+            );
+        }
+
+        @ParameterizedTest(name = "If input is \"{0}\" and player hasn't picked or played yet")
+        @DisplayName("A player can't pass")
+        @ValueSource(strings = {"pass"})
+        void playerHasntPickedYet(String input) {
+            assumingThat(input.equalsIgnoreCase("pass"),
+                    () -> {
+                        addCardToPile(new Card(Face.TWO, Suit.HEARTS, 20));
+                        playerPickCount = 0;
+                        var aPlayerCanTPassTurn = canPlayerPassTurn();
+                        assertFalse(aPlayerCanTPassTurn);
+                    }
+            );
+        }
+
+        @ParameterizedTest(name = "If input is \"{0}\" and player has already picked")
+        @DisplayName("A player can pass")
+        @ValueSource(strings = {"pass"})
+        void playerHasPicked(String input) {
+            assumingThat(input.equalsIgnoreCase("pass"),
+                    () -> {
+                        addCardToPile(new Card(Face.TWO, Suit.HEARTS, 20));
+                        playerPickCount = 1;
+                        var aPlayerCanPassTurn = canPlayerPassTurn();
+                        assertTrue(aPlayerCanPassTurn);
                     }
             );
         }

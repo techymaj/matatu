@@ -58,7 +58,9 @@ public class Rules {
 
     public static boolean canPlayerPassTurn() {
         if (pile.isEmpty()) return false;
-        return playerPickCount != 0;
+        var damageCardOnPile = damageCardOnPile();
+        if (damageCardOnPile) return false;
+        return playerPickCount == 1;
     }
 
     public static boolean canFollowCard() {

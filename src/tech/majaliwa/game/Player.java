@@ -55,11 +55,11 @@ public class Player extends User {
         switch (input.toLowerCase()) {
             case "p" -> userInputIsP();
             case "pass" -> userInputIsPass();
-            default -> userInputIsInvalid(input);
+            default -> playACard(input);
         }
     }
 
-    private void userInputIsInvalid(String input) {
+    private void playACard(String input) {
         try {
             tryPlayingACardPosition(input);
         } catch (IndexOutOfBoundsException e) {
