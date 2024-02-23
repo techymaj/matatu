@@ -61,6 +61,9 @@ public class User {
                 System.out.println("Invalid card. Try again");
                 var topCard = Objects.requireNonNull(getTopCard());
                 System.out.println("Top card: " + topCard);
+                if (getAskedSuit() != null) {
+                    System.out.println("Asked suit: " + getAskedSuit() + " - " + getAskedSuit().getUnicode());
+                }
                 System.out.println("Your hand: ");
                 this.getHand().forEach(
                         c -> System.out.print(c + "(" + (this.getHand().indexOf(c) + 1) + ")" + " ")
@@ -212,7 +215,9 @@ public class User {
     }
 
     public static void askForSuit(Scanner scanner) {
-        System.out.println("Choose a suit: (H)earts, (S)pades, (C)lubs, (D)iamonds");
+        System.out.printf("Choose a suit: (H)earts - %s, (S)pades - %s, (C)lubs - %s, (D)iamonds - %s",
+                Suit.HEARTS.getUnicode(), Suit.SPADES.getUnicode(), Suit.CLUBS.getUnicode(), Suit.DIAMONDS.getUnicode()
+        );
         var suit = scanner.nextLine().toUpperCase();
 
         switch (suit.toUpperCase()) {
