@@ -12,31 +12,6 @@ public class Player extends User {
 
     public void playerTurn() {
         playerActions();
-
-        // Incoming so react
-
-//        if (isDamageCardOnPile()) {
-//            String choice = scanner.nextLine();
-//            System.out.println("You have been hit with a damage card");
-//            var cardPlayed = playCard(Integer.parseInt(choice));
-//            var countered = damageCountered(this, cardPlayed);
-//            if (countered) {
-//                PLAYER_TURN = false;
-//                return;
-//            }
-//        }
-//        if (isAskingCardOnPile()) {
-//            String choice = scanner.nextLine();
-//            var askedSuit = getAskedSuit();
-//            System.out.println("Asked suit is: " + askedSuit);
-//            var cardPlayed = playCard(Integer.parseInt(choice));
-//            var countered = askingCountered(this, cardPlayed);
-//            if (countered != null) {
-//                PLAYER_TURN = false;
-//                return;
-//            }
-//        }
-
         checkInput();
     }
 
