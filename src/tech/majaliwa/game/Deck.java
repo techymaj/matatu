@@ -84,7 +84,8 @@ public class Deck {
         var set = 0;
 
         for (var card : deckOfCards) {
-            System.out.printf("%-8s", card);
+            System.out.print(card);
+            System.out.printf("%-2s","");
             set++;
             if (set == rowsToPrint) {
                 System.out.println();

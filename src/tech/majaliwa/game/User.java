@@ -215,7 +215,7 @@ public class User {
     }
 
     public static void askForSuit(Scanner scanner) {
-        System.out.printf("Choose a suit: (H)earts - %s, (S)pades - %s, (C)lubs - %s, (D)iamonds - %s",
+        System.out.printf("Choose a suit: (H)earts - %s, (S)pades - %s, (C)lubs - %s, (D)iamonds - %s\n",
                 Suit.HEARTS.getUnicode(), Suit.SPADES.getUnicode(), Suit.CLUBS.getUnicode(), Suit.DIAMONDS.getUnicode()
         );
         var suit = scanner.nextLine().toUpperCase();

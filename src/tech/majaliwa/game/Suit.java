@@ -1,5 +1,7 @@
 package tech.majaliwa.game;
 
+import static tech.majaliwa.game.GameColors.*;
+
 public enum Suit {
     HEARTS("♥"),
     SPADES("♠"),
@@ -11,7 +13,14 @@ public enum Suit {
     private final String unicode;
 
     private Suit(String unicode) {
-        this.unicode = unicode;
+        switch (unicode) {
+            case "♥", "♦" -> {
+                this.unicode = RED + unicode + RESET;
+            }
+            default -> {
+                this.unicode = WHITE + unicode + RESET;
+            }
+        }
     }
 
     public String getUnicode() {
