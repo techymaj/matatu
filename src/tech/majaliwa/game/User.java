@@ -25,10 +25,6 @@ public class User {
         return hand;
     }
 
-    public void setHand(ArrayList<Card> hand) {
-        this.hand = hand;
-    }
-
     public void setInitialHand(ArrayList<Card> deck) {
         var initialHand = deck.subList(0, 7);
         this.hand.addAll(initialHand);
@@ -191,7 +187,7 @@ public class User {
         if (userHandIsEmpty) {
             winnerIs(user);
         }
-        endGameIfIsCuttingCard(pile.getLast());
+        endGameIfIsCuttingCard();
     }
 
     private static <T extends User> void winnerIs(T user) {
@@ -226,7 +222,7 @@ public class User {
         }
     }
 
-    public static void endGameIfIsCuttingCard(Card card) {
+    public static void endGameIfIsCuttingCard() {
         var cardOnTop = pile.getLast();
         var currentFace = cardOnTop.face();
         var currentSuit = cardOnTop.suit();
