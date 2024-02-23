@@ -107,10 +107,7 @@ public class Rules {
             var currentFaceIsAce = currentFace.equals(Face.ACE);
 
             if (askedSuit != null) {
-                var currentSuitMatchesAskedSuit = currentSuit.equals(askedSuit);
-                if (currentSuitMatchesAskedSuit) {
-                    return true; // play if suit matches
-                }
+                return currentSuit.equals(askedSuit); // play if suit matches
             }
 
             if (currentFaceIsAce) {

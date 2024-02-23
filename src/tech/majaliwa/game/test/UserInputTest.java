@@ -1,9 +1,6 @@
 package tech.majaliwa.game.test;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import tech.majaliwa.game.Card;
@@ -19,8 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assumptions.assumingThat;
 import static tech.majaliwa.game.Deck.createDeck;
 import static tech.majaliwa.game.Game.*;
-import static tech.majaliwa.game.Rules.canPlayerPassTurn;
-import static tech.majaliwa.game.Rules.canPlayerPickACard;
+import static tech.majaliwa.game.Rules.*;
 import static tech.majaliwa.game.User.addCardToPile;
 
 public class UserInputTest {
@@ -169,6 +165,14 @@ public class UserInputTest {
                         assertTrue(aPlayerCanPassTurn);
                     }
             );
+        }
+
+        @Test
+        @DisplayName("A player can play a valid card")
+        void playerHasPlayedACard() {
+            var getCardPlayed = hand.get(cardPosition);
+            var aPlayerCanPlayCard = canPlayerPlayCard(getCardPlayed);
+            assertTrue(aPlayerCanPlayCard);
         }
     }
 }

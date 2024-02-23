@@ -14,9 +14,9 @@ import java.util.List;
 import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assumptions.assumingThat;
 import static tech.majaliwa.game.Deck.createDeck;
-import static tech.majaliwa.game.Game.JOKER_MODE;
-import static tech.majaliwa.game.Game.pile;
+import static tech.majaliwa.game.Game.*;
 import static tech.majaliwa.game.Rules.*;
 import static tech.majaliwa.game.User.addCardToPile;
 
@@ -27,6 +27,7 @@ class GameTest {
 
     @BeforeEach
     public void setUp() {
+        pile = new ArrayList<>();
         deck = createDeck(true);
         List<Card> serve = deck.subList(0, 7);
         hand = new ArrayList<>(serve);
@@ -361,6 +362,23 @@ class GameTest {
                         new Card(Face.THREE, Suit.SPADES, 30))),
                 () -> assertTrue(player.damageCountered(player,
                         new Card(Face.JOKER, Suit.JOKER_F, 50)))
+        );
+    }
+
+    @Test
+    @DisplayName("Play The Asked Suit")
+    void playTheAskedSuit() {
+        addCardToPile(new Card(Face.ACE, Suit.CLUBS, 60));
+        askedSuit = Suit.HEARTS;
+        assumingThat(isAskingCardOnPile(),
+                () -> {
+                    var cardPlayed = new Card(Face.FIVE, Suit.HEARTS, 5);
+                    var cardCanBePlayed = canPlayerPlayCard(cardPlayed);
+                    if (cardCanBePlayed) {
+                        addCardToPile(cardPlayed);
+                    }
+                    assertTrue(pile.contains(cardPlayed));
+                }
         );
     }
 }
