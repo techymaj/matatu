@@ -1,5 +1,7 @@
 package tech.majaliwa.game;
 
+import java.util.Comparator;
+
 import static tech.majaliwa.game.Game.*;
 import static tech.majaliwa.game.Rules.*;
 
@@ -24,6 +26,18 @@ public class AI extends User {
         if (aiCanFollowThisCard) {
             aiTurn();
         }
+
+        var aiCanAskSuit = isAskingCardOnPile();
+        if (aiCanAskSuit) {
+            var hand = getHand();
+            hand.sort(Comparator.comparing(Card::suit));
+            if (!hand.isEmpty()) {
+                var card = hand.getFirst();
+                var suit = card.suit();
+                setAskedSuit(suit);
+                System.out.println("AI asked for: " + suit);
+            }
+        }
     }
 
     public Card aiPlaysCard() {
@@ -33,6 +47,7 @@ public class AI extends User {
             var aiCanPlayThisCard = canPlayerPlayCard(card);
             if (aiCanPlayThisCard) {
                 addCardToPile(card);
+                checkIfPlayerWon(this);
                 iterator.remove();
                 System.out.println("AI played: " + card);
                 AI_CAN_PICK_CARD_FROM_DECK = true;

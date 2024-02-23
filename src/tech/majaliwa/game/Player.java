@@ -94,6 +94,7 @@ public class Player extends User {
             System.out.println("You have passed your turn");
             playerPickCount = 0;
             PLAYER_TURN = false;
+            AI_CAN_PICK_CARD_FROM_DECK = true;
         } else {
             System.out.println("You can't pass your turn yet");
             playerActions();

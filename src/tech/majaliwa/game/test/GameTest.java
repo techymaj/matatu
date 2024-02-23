@@ -381,4 +381,19 @@ class GameTest {
                 }
         );
     }
+
+    @Test
+    @DisplayName("Ask can be countered")
+    void askCanBeCountered() {
+        var cardPlayed = new Card(Face.ACE, Suit.HEARTS, 20);
+        addCardToPile(cardPlayed);
+        askedSuit = Suit.HEARTS;
+        assumingThat(isAskingCardOnPile(),
+                () -> {
+                    var counter = new Card(Face.ACE, Suit.CLUBS, 20);
+                    var countered = canPlayerPlayCard(counter);
+                    assertTrue(countered);
+                }
+        );
+    }
 }

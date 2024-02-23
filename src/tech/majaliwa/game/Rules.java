@@ -107,7 +107,7 @@ public class Rules {
             var currentFaceIsAce = currentFace.equals(Face.ACE);
 
             if (askedSuit != null) {
-                return currentSuit.equals(askedSuit); // play if suit matches
+                return currentSuit.equals(askedSuit) || currentFaceIsAce; // play if suit matches or ask countered
             }
 
             if (currentFaceIsAce) {
