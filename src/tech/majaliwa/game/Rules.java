@@ -119,10 +119,15 @@ public class Rules {
             var damageCardTwo = previousFace.equals(Face.TWO);
             var damageCardThree = previousFace.equals(Face.THREE) && JOKER_MODE;
             var damageCardJoker = previousFace.equals(Face.JOKER) && JOKER_MODE;
-            var damageCard = damageCardOnPile();
+            var damageCardOnPileIsTrue = damageCardOnPile(); // if true, player can only play a damage card
+            var isADamageCard = (damageCardTwo || damageCardThree || damageCardJoker);
 
-            if ((damageCardTwo || damageCardThree || damageCardJoker) && damageCard) {
-                return currentFace.equals(previousFace) || currentFaceIsAceOfSpades;
+            if (isADamageCard && damageCardOnPileIsTrue) {
+                return currentFace.equals(previousFace)
+                        || currentFaceIsAceOfSpades
+                        || currentFace.equals(Face.TWO)
+                        || currentFace.equals(Face.THREE)
+                        || currentFace.equals(Face.JOKER);
             }
 
             if (askedSuit != null) {
