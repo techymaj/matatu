@@ -57,7 +57,7 @@ public class Player extends User {
     }
 
     private static void playerCantPickACard() {
-        if (Rules.isDamageCardOnPile())
+        if (Rules.dealDamageIfDamageCard())
             System.out.println("Play a card to counter or type 'accept' to accept damage.");
         else {
             System.out.println("You can't pick a card yet. Play a card or pass your turn.");

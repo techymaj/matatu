@@ -20,7 +20,7 @@ public class Rules {
         return !damageCardOnPile();
     }
 
-    public static boolean isDamageCardOnPile() {
+    public static boolean dealDamageIfDamageCard() {
         if (pile.isEmpty()) return false;
 
         var cardOnTop = pile.getLast();

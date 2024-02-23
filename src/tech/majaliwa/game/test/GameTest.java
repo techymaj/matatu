@@ -109,7 +109,7 @@ class GameTest {
     public void ifCardOnTopOfPileIsTwo_DamageCardOnPile() {
         var twoOfHearts = new Card(Face.TWO, Suit.HEARTS, 15);
         addCardToPile(twoOfHearts);
-        assertTrue(isDamageCardOnPile());
+        assertTrue(dealDamageIfDamageCard());
     }
 
     @Test
@@ -118,7 +118,7 @@ class GameTest {
         JOKER_MODE = true;
         var threeOfHearts = new Card(Face.THREE, Suit.HEARTS, 30);
         addCardToPile(threeOfHearts);
-        assertTrue(isDamageCardOnPile());
+        assertTrue(dealDamageIfDamageCard());
     }
 
     @Test
@@ -127,7 +127,7 @@ class GameTest {
         JOKER_MODE = true;
         var jokerOfHearts = new Card(Face.JOKER, Suit.JOKER_F, 60);
         addCardToPile(jokerOfHearts);
-        assertTrue(isDamageCardOnPile());
+        assertTrue(dealDamageIfDamageCard());
     }
 
     @Test
@@ -136,7 +136,7 @@ class GameTest {
         JOKER_MODE = false;
         var threeOfHearts = new Card(Face.THREE, Suit.HEARTS, 30);
         addCardToPile(threeOfHearts);
-        assertFalse(isDamageCardOnPile());
+        assertFalse(dealDamageIfDamageCard());
     }
 
     @Test
@@ -145,7 +145,7 @@ class GameTest {
         JOKER_MODE = false;
         var jokerOfHearts = new Card(Face.JOKER, Suit.JOKER_F, 60);
         addCardToPile(jokerOfHearts);
-        assertFalse(isDamageCardOnPile());
+        assertFalse(dealDamageIfDamageCard());
     }
 
     @Test

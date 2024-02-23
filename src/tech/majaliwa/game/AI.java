@@ -16,7 +16,7 @@ public class AI extends User {
         System.out.println(getHand()); // TODO: remove in production
         playerPickCount = 0;
 
-        if (isDamageCardOnPile()) {
+        if (damageCardOnPile()) {
             var cardPlayed = aiPlaysCard();
             if (cardPlayed == null) {
                 takeDamage(this, pile.getLast().face());

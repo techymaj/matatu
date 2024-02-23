@@ -6,7 +6,7 @@ import java.util.Scanner;
 
 import static tech.majaliwa.game.Game.*;
 import static tech.majaliwa.game.Rules.canPlayerPlayCard;
-import static tech.majaliwa.game.Rules.isDamageCardOnPile;
+import static tech.majaliwa.game.Rules.dealDamageIfDamageCard;
 
 public class User {
     private static boolean AI_TAKES_DAMAGE;
@@ -77,12 +77,6 @@ public class User {
         }
 
         return null;
-    }
-
-    private static void dealDamageIfDamageCard() {
-        if (isDamageCardOnPile()) {
-            setAiTakesDamage(true);
-        }
     }
 
     public static void pickCard(User user) {
