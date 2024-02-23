@@ -31,7 +31,6 @@ public class Player extends User {
             case "p" -> userInputIsP();
             case "pass" -> userInputIsPass();
             case "accept" -> acceptDamage();
-
             default -> playACard(input);
         }
     }
@@ -40,11 +39,14 @@ public class Player extends User {
         if (damageCardOnPile()) {
             takeDamage(this, Objects.requireNonNull(getTopCard()).face());
             setDamageCardOnPile(false);
+            playerPickCount = 0;
+            PLAYER_TURN = false;
+            AI_CAN_PICK_CARD_FROM_DECK = true;
         } else {
             System.out.println("You can't accept damage now");
+            playerActions();
+            checkInput();
         }
-        playerActions();
-        checkInput();
     }
 
     private void playACard(String input) {
@@ -113,6 +115,7 @@ public class Player extends User {
         checkIfPlayerWon(this);
         playerPickCount = 0;
         PLAYER_TURN = false;
+        AI_CAN_PICK_CARD_FROM_DECK = true;
     }
 
     public void playerActions() {
