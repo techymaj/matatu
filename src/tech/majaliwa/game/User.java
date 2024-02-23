@@ -155,7 +155,7 @@ public class User {
             this.hand.addAll(arrayList);
 
             if (this instanceof Player) {
-                System.out.println(user);
+                System.out.println("You " + user);
             } else {
                 System.out.println(this.name + ai);
             }

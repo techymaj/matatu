@@ -30,8 +30,21 @@ public class Player extends User {
         switch (input.toLowerCase()) {
             case "p" -> userInputIsP();
             case "pass" -> userInputIsPass();
+            case "accept" -> acceptDamage();
+
             default -> playACard(input);
         }
+    }
+
+    private void acceptDamage() {
+        if (damageCardOnPile()) {
+            takeDamage(this, Objects.requireNonNull(getTopCard()).face());
+            setDamageCardOnPile(false);
+        } else {
+            System.out.println("You can't accept damage now");
+        }
+        playerActions();
+        checkInput();
     }
 
     private void playACard(String input) {
@@ -117,7 +130,8 @@ public class Player extends User {
     private static void printActionsIfPileIsNotEmpty() {
         var topCard = Objects.requireNonNull(getTopCard());
         System.out.println("Top card: " + topCard);
-        System.out.println("Damage card? " + (damageCardOnPile() ? "Yes" : "No"));
+        System.out.println("Damage card? " + (damageCardOnPile() ?
+                "Yes (Type 'accept' to accept damage or play a card to counter)" : "No"));
 
         if (getAskedSuit() != null) {
             System.out.println("Asked suit: " + getAskedSuit() + " - " + getAskedSuit().getUnicode());

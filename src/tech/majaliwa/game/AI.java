@@ -59,6 +59,7 @@ public class AI extends User {
             var aiCanPlayThisCard = canPlayerPlayCard(card);
             if (aiCanPlayThisCard) {
                 addCardToPile(card);
+                dealDamageIfDamageCard();
                 checkIfPlayerWon(this);
                 iterator.remove();
                 System.out.println("AI played: " + card);
