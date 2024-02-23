@@ -32,8 +32,7 @@ public class Game {
         System.out.println();
 
         var scanner = setGameMode();
-        System.out.println("Enter your player name");
-        String playerName = scanner.nextLine();
+        var playerName = getPlayerName(scanner);
 
         var player = new Player(playerName);
         var AI = new AI("AI");
@@ -43,6 +42,23 @@ public class Game {
         gameUsers(player, AI);
 
         gameInSession(player, AI);
+    }
+
+    private static String getPlayerName(Scanner scanner) {
+        System.out.println("Enter your player name. Enter 'e' to exit the game");
+
+        String playerName = scanner.nextLine();
+        switch (playerName.toLowerCase()) {
+            case "e", "exit" -> {
+                System.out.println("Have a good day!");
+                System.exit(0);
+            }
+            case "" -> {
+                System.out.println("Invalid input");
+                return getPlayerName(scanner);
+            }
+        }
+        return playerName;
     }
 
     public void startGame() {
@@ -99,7 +115,6 @@ public class Game {
     private static Scanner setGameMode() {
         System.out.println("Do you want to play in Joker mode? (y/n). Enter 'e' to exit the game");
         String answer = scanner.nextLine();
-        System.out.println();
 
         switch (answer.toLowerCase()) {
             case "y", "yes" -> {
