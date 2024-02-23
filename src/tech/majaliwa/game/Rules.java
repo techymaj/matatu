@@ -93,6 +93,7 @@ public class Rules {
 
             var currentCardIsJoker_F = card.suit().equals(Suit.JOKER_F);
             var currentCardIsJoker_M = card.suit().equals(Suit.JOKER_M);
+            var currentFaceIsJoker = card.face().equals(Face.JOKER);
 
             var canPlayOnTopOfJoker_F = currentSuit.equals(Suit.HEARTS) || currentSuit.equals(Suit.DIAMONDS);
             var canPlayOnTopOfJoker_M = currentSuit.equals(Suit.SPADES) || currentSuit.equals(Suit.CLUBS);
@@ -105,9 +106,19 @@ public class Rules {
             var previousCardIsAceOfSpades = previousFaceIsAce && previousSuitIsSpades;
 
             var currentFaceIsAce = currentFace.equals(Face.ACE);
+            var currentFaceIsAceOfSpades = currentFaceIsAce && currentSuit.equals(Suit.SPADES);
+
+            var damageCardTwo = previousFace.equals(Face.TWO);
+            var damageCardThree = previousFace.equals(Face.THREE) && JOKER_MODE;
+            var damageCardJoker = previousFace.equals(Face.JOKER) && JOKER_MODE;
+            var damageCard = damageCardOnPile();
+
+            if ((damageCardTwo || damageCardThree || damageCardJoker) && damageCard) {
+                return currentFace.equals(previousFace) || currentFaceIsAceOfSpades;
+            }
 
             if (askedSuit != null) {
-                return currentSuit.equals(askedSuit) || currentFaceIsAce; // play if suit matches or ask countered
+                return currentSuit.equals(askedSuit) || currentFaceIsAce || currentFaceIsJoker; // play if suit matches or ask countered
             }
 
             if (currentFaceIsAce) {

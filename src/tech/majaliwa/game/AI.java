@@ -15,8 +15,20 @@ public class AI extends User {
         System.out.println("AI's turn");
         System.out.println(getHand()); // TODO: remove in production
         playerPickCount = 0;
-        setDamageCardOnPile(false);
 
+        if (isDamageCardOnPile()) {
+            var cardPlayed = aiPlaysCard();
+            if (cardPlayed == null) {
+                takeDamage(this, pile.getLast().face());
+                setDamageCardOnPile(false); // allow play to continue normally
+            }
+            return;
+        }
+
+        ifAIDoesnTakesDamage();
+    }
+
+    private void ifAIDoesnTakesDamage() {
         var cardPlayed = aiPlaysCard();
         if (cardPlayed == null) {
             return;
@@ -54,6 +66,7 @@ public class AI extends User {
                 setAskedSuit(null);  // restrict follow with wrong card e.g. (8♦, 8♠, 9♦) with askedSuit ♦ is wrong
                 return card;
             }
+            if (damageCardOnPile()) return null; // AI can't play any card
         }
 
         // No valid card to play was found in hand
