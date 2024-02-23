@@ -60,7 +60,6 @@ public class AI extends User {
             if (aiCanPlayThisCard) {
                 addCardToPile(card);
                 dealDamageIfDamageCard();
-                endGameIfIsCuttingCard(card);
                 checkIfPlayerWon(this);
                 iterator.remove();
                 System.out.println("AI played: " + card);

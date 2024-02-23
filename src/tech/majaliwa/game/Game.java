@@ -21,6 +21,7 @@ public class Game {
     public static boolean AI_CAN_PICK_CARD_FROM_DECK;
     public static List<User> users = new ArrayList<>();
     public static Suit cuttingSuit;
+    public static ArrayList<Integer> scores = new ArrayList<>();
 
     static {
         playerPickCount = 0;

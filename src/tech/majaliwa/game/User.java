@@ -56,7 +56,6 @@ public class User {
                 if (cardCanBePlayed) {
                     addCardToPile(searchedCard);
                     dealDamageIfDamageCard();
-                    endGameIfIsCuttingCard(searchedCard);
                     AI_CAN_PICK_CARD_FROM_DECK = true;
                     iterator.remove();
                     setAskedSuit(null);  // restrict follow with wrong card e.g. (8♦, 8♠, 9♦) with askedSuit ♦ is wrong
@@ -202,6 +201,7 @@ public class User {
         if (userHandIsEmpty) {
             winnerIs(user);
         }
+        endGameIfIsCuttingCard(pile.getLast());
     }
 
     private static <T extends User> void winnerIs(T user) {
@@ -225,10 +225,10 @@ public class User {
         var suit = scanner.nextLine().toUpperCase();
 
         switch (suit.toUpperCase()) {
-            case "H" -> setAskedSuit(Suit.HEARTS);
-            case "S" -> setAskedSuit(Suit.SPADES);
-            case "C" -> setAskedSuit(Suit.CLUBS);
-            case "D" -> setAskedSuit(Suit.DIAMONDS);
+            case "H", "HEARTS" -> setAskedSuit(Suit.HEARTS);
+            case "S", "SPADES" -> setAskedSuit(Suit.SPADES);
+            case "C", "CLUBS" -> setAskedSuit(Suit.CLUBS);
+            case "D", "DIAMONDS" -> setAskedSuit(Suit.DIAMONDS);
             default -> {
                 System.out.println("Invalid input");
                 askForSuit(scanner);
@@ -236,7 +236,7 @@ public class User {
         }
     }
 
-    public static boolean endGameIfIsCuttingCard(Card card) {
+    public static void endGameIfIsCuttingCard(Card card) {
         var cardOnTop = pile.getLast();
         var currentFace = cardOnTop.face();
         var currentSuit = cardOnTop.suit();
@@ -246,9 +246,6 @@ public class User {
             System.out.println("Cutting card played. Game over!");
             GAME_OVER = true;
             restartGame();
-            return true;
         }
-
-        return false;
     }
 }
