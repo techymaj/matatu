@@ -9,7 +9,6 @@ import static tech.majaliwa.game.Rules.canPlayerPlayCard;
 import static tech.majaliwa.game.Rules.dealDamageIfDamageCard;
 
 public class User {
-    private static boolean AI_TAKES_DAMAGE;
     private final String name;
     private ArrayList<Card> hand;
 
@@ -36,12 +35,7 @@ public class User {
         deck.subList(0, 7).clear();
     }
 
-    public static boolean isAiTakesDamage() {
-        return AI_TAKES_DAMAGE;
-    }
-
     public static void setAiTakesDamage(boolean aiTakesDamage) {
-        AI_TAKES_DAMAGE = aiTakesDamage;
     }
 
     public Card playCard(String input) {
