@@ -53,7 +53,7 @@ class GameTest {
     @Test
     @DisplayName("If pile is not empty, play card of same suit")
     public void ifPileIsNotEmpty_PlayCardOfSameSuit() {
-        var firstCard = new Card(Face.TWO, Suit.HEARTS, 15);
+        var firstCard = new Card(Face.FIVE, Suit.HEARTS, 15);
         addCardToPile(firstCard);
         var playSameSuitCard = new Card(Face.THREE, Suit.HEARTS, 3);
         if (canPlayerPlayCard(playSameSuitCard)) addCardToPile(playSameSuitCard);
