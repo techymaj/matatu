@@ -52,6 +52,14 @@ public class Rules {
         return Objects.requireNonNull(currentFace) == Face.ACE;
     }
 
+    public static boolean isCuttingCard(Card card) {
+        if (pile.isEmpty()) return false;
+        var cardOnTop = pile.getLast();
+        var currentFace = cardOnTop.face();
+        var currentSuit = cardOnTop.suit();
+        return currentFace.equals(Face.SEVEN) && currentSuit.equals(cuttingSuit);
+    }
+
     public static boolean canPlayerPlayCard(Card card) {
         return isValidCard(card);
     }

@@ -396,4 +396,13 @@ class GameTest {
                 }
         );
     }
+
+    @Test
+    @DisplayName("If the cutting card is played_ENDGAME")
+    void ifTheCuttingCardIsPlayedEndgame() {
+        var cardPlayed = new Card(Face.SEVEN, Suit.HEARTS, 20);
+        addCardToPile(cardPlayed);
+        isCuttingCard(cardPlayed);
+        fail("Not implemented");
+    }
 }

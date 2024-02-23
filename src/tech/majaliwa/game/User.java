@@ -56,6 +56,7 @@ public class User {
                 if (cardCanBePlayed) {
                     addCardToPile(searchedCard);
                     dealDamageIfDamageCard();
+                    endGameIfIsCuttingCard(searchedCard);
                     AI_CAN_PICK_CARD_FROM_DECK = true;
                     iterator.remove();
                     setAskedSuit(null);  // restrict follow with wrong card e.g. (8♦, 8♠, 9♦) with askedSuit ♦ is wrong
@@ -233,5 +234,21 @@ public class User {
                 askForSuit(scanner);
             }
         }
+    }
+
+    public static boolean endGameIfIsCuttingCard(Card card) {
+        var cardOnTop = pile.getLast();
+        var currentFace = cardOnTop.face();
+        var currentSuit = cardOnTop.suit();
+        var cuttingCard = currentFace.equals(Face.SEVEN) && currentSuit.equals(cuttingSuit);
+
+        if (cuttingCard) {
+            System.out.println("Cutting card played. Game over!");
+            GAME_OVER = true;
+            restartGame();
+            return true;
+        }
+
+        return false;
     }
 }

@@ -20,11 +20,13 @@ public class Game {
     public static boolean DAMAGE_CARD_ON_PILE;
     public static boolean AI_CAN_PICK_CARD_FROM_DECK;
     public static List<User> users = new ArrayList<>();
+    public static Suit cuttingSuit;
 
     static {
         playerPickCount = 0;
         DAMAGE_CARD_ON_PILE = false;
         AI_CAN_PICK_CARD_FROM_DECK = true;
+        cuttingSuit = null;
     }
 
     public static void main(String[] args) {
@@ -153,7 +155,19 @@ public class Game {
         System.out.println("Dealing cards...");
         player.setInitialHand(deck);
         ai.setInitialHand(deck);
+        setCuttingCard();
         System.out.println("Size of deck: " + deck.size());
+    }
+
+    private static Card setCuttingCard() {
+        var cuttingCard = deck.getFirst();
+        if (cuttingCard.face().equals(Face.SEVEN)) {
+            Collections.shuffle(deck);
+            return setCuttingCard();
+        }
+        setCuttingSuit(cuttingCard.suit());
+        deck.remove(cuttingCard);
+        return cuttingCard;
     }
 
     private static <T extends  User> void gameInSession(T player, T ai) {
@@ -191,6 +205,8 @@ public class Game {
         System.out.println("Pile size --> " + pile.size());
         System.out.println("Deck size --> " + deck.size());
         System.out.println("-".repeat(25));
+        System.out.println("Cutting suit: " + getCuttingSuit() + " - " + getCuttingSuit().getUnicode());
+        System.out.println("-".repeat(25));
         if (!pile.isEmpty()) {
             System.out.println("Top of the pile: " + pile.getLast());
         } else {
@@ -220,5 +236,13 @@ public class Game {
 
     public static void setDamageCardOnPile(boolean damageCardOnPile) {
         DAMAGE_CARD_ON_PILE = damageCardOnPile;
+    }
+
+    public static Suit getCuttingSuit() {
+        return cuttingSuit;
+    }
+
+    public static void setCuttingSuit(Suit cuttingSuit) {
+        Game.cuttingSuit = cuttingSuit;
     }
 }
