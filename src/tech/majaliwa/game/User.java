@@ -54,8 +54,8 @@ public class User {
             if (cardMatchesPlayedPosition) {
                 var cardCanBePlayed = canPlayerPlayCard(searchedCard);
                 if (cardCanBePlayed) {
-                    dealDamageIfDamageCard();
                     addCardToPile(searchedCard);
+                    dealDamageIfDamageCard();
                     AI_CAN_PICK_CARD_FROM_DECK = true;
                     iterator.remove();
                     setAskedSuit(null);  // restrict follow with wrong card e.g. (8♦, 8♠, 9♦) with askedSuit ♦ is wrong
