@@ -108,7 +108,7 @@ public class Player extends User {
             checkInput();
         }
         var theCardPlayedIsAnAskingCard = isAskingCardOnPile();
-        if (theCardPlayedIsAnAskingCard) {
+        if (theCardPlayedIsAnAskingCard && !damageCardOnPile()) {
             checkIfPlayerWon(this);
             askForSuit(scanner);
         }
