@@ -35,9 +35,6 @@ public class User {
         deck.subList(0, 7).clear();
     }
 
-    public static void setAiTakesDamage(boolean aiTakesDamage) {
-    }
-
     public Card playCard(String input) {
         var iterator = this.hand.listIterator();
         var cardPositionToPlay = this.hand.get(Integer.parseInt(input) - 1);
@@ -172,7 +169,6 @@ public class User {
         if (damageCard2 || damageCard3 || joker || aceOfSpades) {
             var aJUnitTestIsRunning = isJUnitTest();
             if (aJUnitTestIsRunning) return true; // solves errors in JUnit tests when testing for damage cards
-            setAiTakesDamage(true);
             addCardToPile(cardPlayed);
             checkIfPlayerWon(user);
             return true;
