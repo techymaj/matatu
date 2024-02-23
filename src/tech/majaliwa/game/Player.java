@@ -93,7 +93,7 @@ public class Player extends User {
     }
 
     private void tryPlayingACardPosition(String input) {
-        var cardPlayed = playCard(Integer.parseInt(input));
+        var cardPlayed = playCard(input);
         if (cardPlayed != null) {
             playThisCardIfCardPlayedIsNotNull(cardPlayed);
         }

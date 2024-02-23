@@ -44,10 +44,10 @@ public class User {
         AI_TAKES_DAMAGE = aiTakesDamage;
     }
 
-    public Card playCard(int position) {
+    public Card playCard(String input) {
         var iterator = this.hand.listIterator();
+        var cardPositionToPlay = this.hand.get(Integer.parseInt(input) - 1);
 
-        var cardPositionToPlay = this.hand.get(position - 1);
         while (iterator.hasNext()) {
             var searchedCard = iterator.next();
             var cardMatchesPlayedPosition = searchedCard.equals(cardPositionToPlay);
@@ -72,7 +72,7 @@ public class User {
                         c -> System.out.print(c + "(" + (this.getHand().indexOf(c) + 1) + ")" + " ")
                 );
                 System.out.println();
-                return playCard(scanner.nextInt());
+                return playCard(scanner.nextLine());
             }
         }
 
