@@ -127,15 +127,6 @@ public class Player extends User {
         PLAYER_TURN = false;
     }
 
-    private Suit askingCountered(Card cardPlayed) {
-        if (cardPlayed.face() == Face.ACE) {
-            addCardToPile(cardPlayed);
-            askForSuit(scanner);
-            return askedSuit;
-        }
-        return null;
-    }
-
     public void playerActions() {
         System.out.println("It's your turn " + this.getName());
         if (!pile.isEmpty()) {
