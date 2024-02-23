@@ -1,6 +1,7 @@
 package tech.majaliwa.game;
 
 import java.util.Comparator;
+import java.util.NoSuchElementException;
 
 import static tech.majaliwa.game.Game.*;
 import static tech.majaliwa.game.Rules.*;
@@ -60,11 +61,11 @@ public class AI extends User {
             if (aiCanPlayThisCard) {
                 addCardToPile(card);
                 dealDamageIfDamageCard();
-                checkIfPlayerWon(this);
                 iterator.remove();
                 System.out.println("AI played: " + card);
                 AI_CAN_PICK_CARD_FROM_DECK = true;
                 setAskedSuit(null);  // restrict follow with wrong card e.g. (8♦, 8♠, 9♦) with askedSuit ♦ is wrong
+                checkIfPlayerWon(this);
                 return card;
             }
             if (damageCardOnPile()) return null; // AI can't play any card
@@ -83,9 +84,14 @@ public class AI extends User {
 
     private void aiPicksFromDeck() {
         AI_CAN_PICK_CARD_FROM_DECK = false;
-        var cardPicked = deck.getFirst();
-        System.out.println("AI picked a card from the deck: " + cardPicked); // TODO: remove in production
-        getHand().add(cardPicked);
-        deck.removeFirst();
+        try {
+            var cardPicked = deck.getFirst();
+            System.out.println("AI picked a card from the deck: " + cardPicked); // TODO: remove in production
+            getHand().add(cardPicked);
+            deck.removeFirst();
+        } catch (NoSuchElementException nse) {
+            reshuffleDeckAndContinuePlaying();
+            aiPicksFromDeck();
+        }
     }
 }
