@@ -119,7 +119,7 @@ public class Player extends User {
     }
 
     public void playerActions() {
-        System.out.println("It's your turn " + this.getName());
+        System.out.println("It's your turn, " + this.getName());
         if (!pile.isEmpty()) {
             printActionsIfPileIsNotEmpty();
         }

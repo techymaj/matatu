@@ -206,7 +206,7 @@ public class User {
 
     private static <T extends User> void winnerIs(T user) {
         if (user instanceof Player) {
-            System.out.println("Congratulations, " + user.getName() + " you won!");
+            System.out.println("Congratulations, " + user.getName() + ", you won!");
         } else {
             System.out.println(user.getName() + " won!");
         }
