@@ -124,10 +124,10 @@ public class Rules {
 
             if (isADamageCard && damageCardOnPileIsTrue) {
                 return currentFace.equals(previousFace)
-                        || currentFaceIsAceOfSpades
-                        || currentFace.equals(Face.TWO)
-                        || currentFace.equals(Face.THREE)
-                        || currentFace.equals(Face.JOKER);
+                        || currentFaceIsAceOfSpades;
+//                        || currentFace.equals(Face.TWO)
+//                        || currentFace.equals(Face.THREE)
+//                        || currentFace.equals(Face.JOKER);
             }
 
             if (askedSuit != null) {
