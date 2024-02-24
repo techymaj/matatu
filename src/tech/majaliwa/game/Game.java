@@ -22,13 +22,19 @@ public class Game {
     public static boolean AI_CAN_PICK_CARD_FROM_DECK;
     public static List<User> users = new ArrayList<>();
     public static Suit cuttingSuit;
-    public static ArrayList<Integer> scores = new ArrayList<>();
+    public static boolean CUTTING_CARD_PLAYED;
+    public static int round;
+    public static String PLAYER_WHO_WON;
+    public static ArrayList<ScoreHistory> scores = new ArrayList<>();
 
     static {
         playerPickCount = 0;
         DAMAGE_CARD_ON_PILE = false;
         AI_CAN_PICK_CARD_FROM_DECK = true;
         cuttingSuit = null;
+        CUTTING_CARD_PLAYED = false;
+        round = 1;
+        PLAYER_WHO_WON = "";
     }
 
     public static void main(String[] args) {
@@ -101,6 +107,7 @@ public class Game {
                 player.getHand().clear();
                 ai.getHand().clear();
                 GAME_OVER = false;
+                round++;
                 setGameMode();
                 gameUsers(player, ai);
                 gameInSession(player, ai);
@@ -181,11 +188,22 @@ public class Game {
         checkWinner(player, (AI) ai);
         System.out.println("-".repeat(25));
         System.out.println("Your hand: " + player.getHand());
-        System.out.println("Your total card value: " + player.getHand().stream().mapToInt(Card::cardValue).sum());
+        var playerCardValue = player.getHand().stream().mapToInt(Card::cardValue).sum();
+        System.out.println("Your total card value: " + playerCardValue);
+
         System.out.println("-".repeat(25));
         System.out.println("AI's hand: " + ai.getHand());
-        System.out.println("AI's total card value: " + ai.getHand().stream().mapToInt(Card::cardValue).sum());
+        var aiCardValue = ai.getHand().stream().mapToInt(Card::cardValue).sum();
+        System.out.println("AI's total card value: " + aiCardValue);
         System.out.println("-".repeat(25));
+
+        scores.add(new ScoreHistory(player, playerCardValue, round));
+        scores.add(new ScoreHistory(ai, aiCardValue, round));
+        System.out.println("Score History \nRound: #" + round + " goes to " + PLAYER_WHO_WON);
+        System.out.println("-".repeat(25));
+        scores.forEach(System.out::println);
+        System.out.println("-".repeat(25));
+
         restartGame();
     }
 

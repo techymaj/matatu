@@ -237,6 +237,7 @@ public class User {
 
         if (cuttingCard) {
             System.out.println("Cutting card played. Game over!");
+            CUTTING_CARD_PLAYED = true;
             GAME_OVER = true;
         }
     }
@@ -247,8 +248,10 @@ public class User {
 
         if (playerSum < aiSum) {
             winnerIs(player);
+            PLAYER_WHO_WON = player.getName();
         } else if (playerSum > aiSum){
             winnerIs(ai);
+            PLAYER_WHO_WON = ai.getName();
         } else {
             System.out.println("It's a draw");
             GAME_OVER = true;
