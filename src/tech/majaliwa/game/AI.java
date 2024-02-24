@@ -14,7 +14,6 @@ public class AI extends User {
 
     void aiTurn() {
         System.out.println("AI's turn");
-        System.out.println(getHand()); // TODO: remove in production
         playerPickCount = 0;
 
         if (damageCardOnPile()) {
@@ -87,7 +86,7 @@ public class AI extends User {
         AI_CAN_PICK_CARD_FROM_DECK = false;
         try {
             var cardPicked = deck.getFirst();
-            System.out.println("AI picked a card from the deck: " + cardPicked); // TODO: remove in production
+            System.out.println("AI picked a card from the deck");
             getHand().add(cardPicked);
             deck.removeFirst();
         } catch (NoSuchElementException nse) {
