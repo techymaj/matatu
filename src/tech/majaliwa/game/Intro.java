@@ -10,6 +10,7 @@ public class Intro {
         If you pick up a card that you can play, you can play it.
         If you pick up a card that you can't play, you must keep it and let the next player play.
         The game is played in rounds, and the first player to get rid of all their cards wins the round.
+        If a cutting card is played, the player with the least cards in their hand wins the round.
         """;
 
     public static String JOKER = """
