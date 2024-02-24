@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Scanner;
 
 import static tech.majaliwa.game.Deck.printDeck;
+import static tech.majaliwa.game.User.checkWinner;
 
 public class Game {
 
@@ -106,6 +107,7 @@ public class Game {
             }
             case "n", "no" -> {
                 System.out.println("Thanks for playing!");
+                scanner.close();
                 System.exit(0);
             }
             default -> {
@@ -176,9 +178,8 @@ public class Game {
         do {
             playTheGame(player, ai);
         } while (!GAME_OVER);
-
+        checkWinner(player, ai);
         restartGame();
-        scanner.close();
     }
 
     private static <T extends User> void playTheGame(T player, T ai) {

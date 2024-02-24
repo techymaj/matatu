@@ -4,10 +4,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import tech.majaliwa.game.Card;
-import tech.majaliwa.game.Face;
-import tech.majaliwa.game.Player;
-import tech.majaliwa.game.Suit;
+import tech.majaliwa.game.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -402,6 +399,6 @@ class GameTest {
     void ifTheCuttingCardIsPlayedEndgame() {
         var cardPlayed = new Card(Face.SEVEN, Suit.HEARTS, 7);
         addCardToPile(cardPlayed);
-        isCuttingCard(cardPlayed);
+        User.isCuttingCard(cardPlayed);
     }
 }

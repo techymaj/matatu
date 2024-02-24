@@ -182,6 +182,14 @@ public class User {
         return false;
     }
 
+    public static boolean isCuttingCard(Card card) {
+        if (pile.isEmpty()) return false;
+        var cardOnTop = pile.getLast();
+        var currentFace = cardOnTop.face();
+        var currentSuit = cardOnTop.suit();
+        return currentFace.equals(Face.SEVEN) && currentSuit.equals(cuttingSuit);
+    }
+
     public static <T extends User> void checkIfPlayerWon(T user) {
         var userHandIsEmpty = user.getHand().isEmpty();
         if (userHandIsEmpty) {
@@ -231,7 +239,21 @@ public class User {
         if (cuttingCard) {
             System.out.println("Cutting card played. Game over!");
             GAME_OVER = true;
-            restartGame();
+        }
+    }
+
+    public static void checkWinner(User player, User ai) {
+        var playerSum = player.getHand().stream().mapToInt(Card::cardValue).sum();
+        var aiSum = ai.getHand().stream().mapToInt(Card::cardValue).sum();
+
+        if (playerSum < aiSum) {
+            winnerIs(player);
+        } else if (playerSum > aiSum){
+            winnerIs(ai);
+        } else {
+            System.out.println("It's a draw");
+            GAME_OVER = true;
+            // TODO: reshuffle the deck and go to penalties (pick 2 cards each) and count those
         }
     }
 }
