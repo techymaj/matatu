@@ -179,6 +179,13 @@ public class Game {
             playTheGame(player, ai);
         } while (!GAME_OVER);
         checkWinner(player, (AI) ai);
+        System.out.println("-".repeat(25));
+        System.out.println("Your hand: " + player.getHand());
+        System.out.println("Your total card value: " + player.getHand().stream().mapToInt(Card::cardValue).sum());
+        System.out.println("-".repeat(25));
+        System.out.println("AI's hand: " + ai.getHand());
+        System.out.println("AI's total card value: " + ai.getHand().stream().mapToInt(Card::cardValue).sum());
+        System.out.println("-".repeat(25));
         restartGame();
     }
 
