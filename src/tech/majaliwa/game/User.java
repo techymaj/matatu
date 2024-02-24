@@ -204,6 +204,7 @@ public class User {
         } else {
             System.out.println(user.getName() + " won!");
         }
+        PLAYER_WHO_WON = user.getName();
         GAME_OVER = true;
     }
 
@@ -248,10 +249,8 @@ public class User {
 
         if (playerSum < aiSum) {
             winnerIs(player);
-            PLAYER_WHO_WON = player.getName();
         } else if (playerSum > aiSum){
             winnerIs(ai);
-            PLAYER_WHO_WON = ai.getName();
         } else {
             System.out.println("It's a draw");
             GAME_OVER = true;
