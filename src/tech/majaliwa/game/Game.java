@@ -185,7 +185,7 @@ public class Game {
         do {
             playTheGame(player, ai);
         } while (!GAME_OVER);
-        checkWinner(player, (AI) ai);
+        if (CUTTING_CARD_PLAYED) checkWinner(player, (AI) ai);
         System.out.println("-".repeat(25));
         System.out.println("Your hand: " + player.getHand());
         var playerCardValue = player.getHand().stream().mapToInt(Card::cardValue).sum();

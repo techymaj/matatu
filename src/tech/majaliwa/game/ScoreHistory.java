@@ -14,8 +14,7 @@ public class ScoreHistory {
     @Override
     public String toString() {
         return ("""
-                In round #%d:
-                %s has %d points
+                In round #%d: | %s has %d points
                 """).formatted(round, user.getName(), score);
 
     }

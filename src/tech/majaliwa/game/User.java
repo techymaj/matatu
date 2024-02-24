@@ -192,10 +192,10 @@ public class User {
 
     public static <T extends User> void checkIfPlayerWon(T user) {
         var userHandIsEmpty = user.getHand().isEmpty();
-        if (userHandIsEmpty) {
+        endGameIfIsCuttingCard();
+        if (userHandIsEmpty && !CUTTING_CARD_PLAYED) {
             winnerIs(user);
         }
-        endGameIfIsCuttingCard();
     }
 
     private static <T extends User> void winnerIs(T user) {
