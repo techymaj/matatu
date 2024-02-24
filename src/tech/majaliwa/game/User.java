@@ -205,6 +205,12 @@ public class User {
             System.out.println(user.getName() + " won!");
         }
         GAME_OVER = true;
+        if (user instanceof Player) {
+            System.out.println("-".repeat(25));
+            System.out.println("Your hand: " + user.getHand());
+            System.out.println("Your total card value: " + user.getHand().stream().mapToInt(Card::cardValue).sum());
+            System.out.println("-".repeat(25));
+        }
         restartGame();
     }
 
@@ -242,7 +248,7 @@ public class User {
         }
     }
 
-    public static void checkWinner(User player, User ai) {
+    public static void checkWinner(User player, AI ai) {
         var playerSum = player.getHand().stream().mapToInt(Card::cardValue).sum();
         var aiSum = ai.getHand().stream().mapToInt(Card::cardValue).sum();
 

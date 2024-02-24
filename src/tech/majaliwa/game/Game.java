@@ -178,7 +178,7 @@ public class Game {
         do {
             playTheGame(player, ai);
         } while (!GAME_OVER);
-        checkWinner(player, ai);
+        checkWinner(player, (AI) ai);
         restartGame();
     }
 
