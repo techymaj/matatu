@@ -1,0 +1,10 @@
+<component name="ArtifactManager">
+  <artifact type="jpackage" name="Matatu">
+    <output-path>$PROJECT_DIR$/Releases/macOS</output-path>
+    <root id="root">
+      <element id="archive" name="Matatu.jar">
+        <element id="module-output" name="Matatu" />
+      </element>
+    </root>
+  </artifact>
+</component>

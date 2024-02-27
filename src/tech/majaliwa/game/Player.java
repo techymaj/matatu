@@ -140,5 +140,6 @@ public class Player extends User {
             System.out.println("Asked suit: " + getAskedSuit() + " - " + getAskedSuit().getUnicode());
         }
         System.out.println("Pick count: " + playerPickCount);
+        System.out.println(playerPickCount == 1 ? "You can't pick a card yet, play a card or type 'pass' to pass your turn" : "You can pick a card with 'p'");
     }
 }
