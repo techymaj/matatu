@@ -17,6 +17,9 @@
         <div class="error" th:if="${param.error}">
             <i>Sorry! You entered bad credentials.</i>
         </div>
+        <div class="success" th:if="${param.logout}">
+            <i>You've been successfully logged out.</i>
+        </div>
         <div class="inputBox">
             <input type="text" name="username" required>
             <span>Username</span>
