@@ -14,6 +14,9 @@
     <span class="borderLine"></span>
     <form action="#" th:action="@{/authenticateTheUser}" method="post">
         <h2>Sign in</h2>
+        <div class="error" th:if="${param.error}">
+            <i>Sorry! You entered bad credentials.</i>
+        </div>
         <div class="inputBox">
             <input type="text" name="username" required>
             <span>Username</span>
