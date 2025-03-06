@@ -27,7 +27,14 @@ public class MatatuSecurity {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.authorizeHttpRequests(
-                configurer -> configurer.requestMatchers(HttpMethod.GET, "/").hasRole("PLAYER"));
+                configurer -> configurer
+                        .requestMatchers(HttpMethod.GET, "/").hasRole("PLAYER")
+                        .requestMatchers("/images/**", "/css/**", "/js/**").permitAll()
+        ).formLogin(form -> form
+                .loginPage("/showCustomLoginForm")
+                .loginProcessingUrl("/authenticateTheUser")
+                .permitAll()
+        );
         httpSecurity.httpBasic(Customizer.withDefaults());
         return httpSecurity.build();
     }
