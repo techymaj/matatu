@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class LoginController {
 
-    @GetMapping("/showCustomLoginForm")
+    @GetMapping("/login")
     public String showCustomLoginForm() {
         return "custom-login";
     }

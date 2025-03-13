@@ -28,14 +28,18 @@ public class MatatuSecurity {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.authorizeHttpRequests(
-                configurer -> configurer
-                        .requestMatchers(HttpMethod.GET, "/").hasRole("PLAYER")
-                        .requestMatchers("/images/**", "/css/**", "/js/**").permitAll()
-        ).formLogin(form -> form
-                .loginPage("/showCustomLoginForm")
-                .loginProcessingUrl("/authenticateTheUser")
-                .permitAll()
-        ).logout(LogoutConfigurer::permitAll); // add logout support for free
+                        configurer -> configurer
+                                .requestMatchers(HttpMethod.GET, "/").hasRole("PLAYER")
+                                .requestMatchers("/images/**", "/css/**", "/js/**").permitAll()
+                ).formLogin(form -> form
+                        .loginPage("/login")
+                        .loginProcessingUrl("/authenticateTheUser")
+                        .permitAll()
+                ).logout(LogoutConfigurer::permitAll) // add logout support for free
+                .exceptionHandling(
+                        configurer ->
+                                configurer.accessDeniedPage("/access-denied")
+                );
 
         httpSecurity.httpBasic(Customizer.withDefaults());
         return httpSecurity.build();
