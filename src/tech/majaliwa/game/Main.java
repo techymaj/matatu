@@ -1,11 +1,16 @@
 package tech.majaliwa.game;
 
-import static tech.majaliwa.game.Game.scanner;
+import java.awt.GraphicsEnvironment;
 
 public class Main {
     public static void main(String[] args) {
-        Game game = new Game();
-        game.startGame();
-        scanner.close();
+        if (GraphicsEnvironment.isHeadless()) {
+            Game game = new Game();
+            game.startGame();
+            Game.scanner.close();
+            return;
+        }
+
+        javax.swing.SwingUtilities.invokeLater(() -> new MatatuWindow().setVisible(true));
     }
 }

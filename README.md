@@ -17,7 +17,7 @@ The goal of the game is to be the first player to get rid of all your cards.
 ## How to Play
 
 1. **Setup**: 
-   - Pick a game mode.
+   - Launch the game to open the Swing card table, then pick Classic or Joker mode.
    - Enter your name.
 
 2. **Gameplay**:
@@ -34,5 +34,8 @@ The goal of the game is to be the first player to get rid of all your cards.
    - The game can be played over multiple rounds, and the overall winner is the player with the most round wins.
 
 ## Note
+The desktop interface is built with Java Swing. When launched without a graphical
+environment, the game falls back to its console interface.
+
 This README provides a basic overview of the rules and gameplay for Matatu!
 Enjoy playing Matatu!

@@ -28,4 +28,8 @@ public class Intro {
                     The deck does not have jokers.
                     The Ace of spades holds the highest value in the deck (60).
                     ------------------------------------------------------------""";
+
+    private Intro() {
+        
+    }
 }
